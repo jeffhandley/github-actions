@@ -1,0 +1,38 @@
+# This workflow will add labels based on issue and pull request interactions
+
+name: Interaction Labels
+on:
+  issues:
+    types: [opened, reopened, edited, transferred, closed]
+  pull_request:
+    types: [opened, reopened, edited, closed, merged]
+
+  workflow_dispatch:
+    inputs:
+      event:
+        required: true
+        type: string
+        default: issues
+      interaction:
+        required: true
+        type: string
+        default: edited
+
+permissions:
+  issues: write
+  pull-requests: write
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        interaction: [opened, reopened, edited, transferred, closed]
+        event: [issues, pull_request]
+    steps:
+      - name: Echo matrix values
+        run: |
+          echo inputs.event: ${{ inputs.event }}
+          echo inputs.interaction: ${{ inputs.interaction }}
+          echo matrix.interaction: ${{ matrix.interaction }}
+          echo matrix.event: ${{ matrix.event }}
