@@ -40,8 +40,8 @@ jobs:
           echo matrix.action: ${{ matrix.interaction }}
           echo inputs or event: ${{ github.event.inputs.event_name || github.event_name }}
           echo inputs or event: ${{ github.event.inputs.action || github.event.action }}
-          echo env_event: $github_event
-          echo env_action: $github_action
+          echo environment event_name: $event_name
+          echo environment action: $action
         env:
           event_name: ${{ github.event.inputs.event_name || github.event_name }}
           action: ${{ github.event.inputs.action || github.event.action }}
