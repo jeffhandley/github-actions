@@ -33,8 +33,16 @@ jobs:
       - name: Echo matrix values
         run: |
           echo github: "${{ toJson(github) }}"
+          echo event_name: ${{ github.event_name }}
           echo action: ${{ github.event.action }}
           echo inputs.event: ${{ github.event.inputs.event }}
           echo inputs.interaction: ${{ github.event.inputs.interaction }}
           echo matrix.interaction: ${{ matrix.interaction }}
           echo matrix.event: ${{ matrix.event }}
+          echo inputs || event: ${{ github.event.inputs.event || github.event_name }}
+          echo inputs || event: ${{ github.event.inputs.action || github.event.action }}
+          echo env_event: $github_event
+          echo env_action: $github_action
+        env:
+          github_event: ${{ github.event.inputs.event || github.event_name }}
+          github_action: ${{ github.event.inputs.action || github.event.action }}
