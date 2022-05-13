@@ -32,7 +32,9 @@ jobs:
     steps:
       - name: Echo matrix values
         run: |
+          echo action: ${{ github.event.action }}
           echo inputs.event: ${{ github.event.inputs.event }}
           echo inputs.interaction: ${{ github.event.inputs.interaction }}
           echo matrix.interaction: ${{ matrix.interaction }}
           echo matrix.event: ${{ matrix.event }}
+          echo ${{ github }}
