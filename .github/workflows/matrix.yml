@@ -9,11 +9,11 @@ on:
 
   workflow_dispatch:
     inputs:
-      event:
+      event_name:
         required: true
         type: string
         default: issues
-      interaction:
+      action:
         required: true
         type: string
         default: edited    
@@ -27,22 +27,21 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        interaction: [opened, reopened, edited, transferred, closed]
-        event: [issues, pull_request]
+        event_name: [issues, pull_request]
+        action: [opened, reopened, edited, transferred, closed]
     steps:
       - name: Echo matrix values
         run: |
-          echo github: "${{ toJson(github) }}"
           echo event_name: ${{ github.event_name }}
           echo action: ${{ github.event.action }}
-          echo inputs.event: ${{ github.event.inputs.event }}
-          echo inputs.interaction: ${{ github.event.inputs.interaction }}
-          echo matrix.interaction: ${{ matrix.interaction }}
-          echo matrix.event: ${{ matrix.event }}
-          echo inputs || event: ${{ github.event.inputs.event || github.event_name }}
-          echo inputs || event: ${{ github.event.inputs.action || github.event.action }}
+          echo inputs.event_name: ${{ github.event.inputs.event_name }}
+          echo inputs.action: ${{ github.event.inputs.action }}
+          echo matrix.event_name: ${{ matrix.event_name }}
+          echo matrix.action: ${{ matrix.interaction }}
+          echo inputs or event: ${{ github.event.inputs.event_name || github.event_name }}
+          echo inputs or event: ${{ github.event.inputs.action || github.event.action }}
           echo env_event: $github_event
           echo env_action: $github_action
         env:
-          github_event: ${{ github.event.inputs.event || github.event_name }}
-          github_action: ${{ github.event.inputs.action || github.event.action }}
+          event_name: ${{ github.event.inputs.event_name || github.event_name }}
+          action: ${{ github.event.inputs.action || github.event.action }}
