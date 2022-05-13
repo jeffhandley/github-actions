@@ -32,7 +32,7 @@ jobs:
     steps:
       - name: Echo matrix values
         run: |
-          echo github: ${{ toJson(github) }}
+          echo github: "${{ toJson(github) }}"
           echo action: ${{ github.event.action }}
           echo inputs.event: ${{ github.event.inputs.event }}
           echo inputs.interaction: ${{ github.event.inputs.interaction }}
