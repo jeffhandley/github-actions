@@ -1,0 +1,7 @@
+name: '.NET Org Area Pod Issue Triage'
+description: 'A GitHub action that drives the .NET org's area pod issue triage process'
+branding:
+  color: purple
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
