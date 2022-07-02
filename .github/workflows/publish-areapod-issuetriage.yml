@@ -1,17 +1,16 @@
 name: "Publish: areapod-issuetriage"
 
-on:
-  workflow_dispatch:
-    inputs:
-      dockertag:
-        description: Tag to use on the docker image
-        required: true
-        default: main
+on: workflow_dispatch
 
 jobs:
-  docker:
+  docker-build-push:
     runs-on: ubuntu-latest
     steps:
+      - name: Log job info
+        run: |
+          echo "Building and pushing Docker image with tags:"
+          echo "  ghcr.io/jeffhandley/action-playground/areapod-issuetriage:${{ github.ref_name }}"
+
       - name: Clone repository
         uses: actions/checkout@v3
 
@@ -22,13 +21,9 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Log the branch/tag
-        run: |
-          echo "Branch/tag: ${{ github.ref_name }}"
-
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
           context: ./actions/AreaPod/AreaPod.IssueTriage
-          push: false
-          tags: ghcr.io/jeffhandley/action-playground/areapod-issuetriage:${{ github.event.inputs.dockertag }}
+          push: true
+          tags: ghcr.io/jeffhandley/action-playground/areapod-issuetriage:${{ github.ref_name }}
