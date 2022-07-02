@@ -4,9 +4,8 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 as build-artifacts
 # Copy everything and publish the release (publish implicitly restores and builds)
 COPY . /actions
 WORKDIR "/actions"
-RUN dotnet publish AreaPod.IssueTriage.csproj -c Release -o artifacts
+RUN dotnet publish AreaPod.IssueTriage.csproj -c Release -o artifacts -r linux-x64 --sc
 
 # Export an image based on the .NET SDK that has the build artifacts included
-FROM mcr.microsoft.com/dotnet/sdk:7.0
+FROM ubuntu:latest
 COPY --from=build-artifacts /actions/artifacts /actions
-ENTRYPOINT [ "dotnet", "/actions/AreaPod.IssueTriage.dll" ]
