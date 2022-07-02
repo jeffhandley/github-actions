@@ -6,9 +6,12 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
-      - name: Build and push
+      - name: Clone repository
+        uses: actions/checkout@v3
+
+      - name: Docker build and push
         uses: docker/build-push-action@v3
         with:
-          context: "{{defaultContext}}:actions/AreaPod/AreaPod.IssueTriage"
+          context: ./actions/AreaPod/AreaPod.IssueTriage
           push: false
           tags: jeffhandley/action-playground/areapod-issuetriage:latest
