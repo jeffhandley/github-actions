@@ -13,5 +13,5 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./actions/AreaPod/AreaPod.IssueTriage
-          push: false
+          push: true
           tags: ghcr.io/jeffhandley/action-playground/areapod-issuetriage:latest
