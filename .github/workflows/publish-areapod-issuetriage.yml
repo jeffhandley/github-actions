@@ -6,7 +6,7 @@ on:
       dockertag:
         description: Tag to use on the docker image
         required: true
-        default: latest
+        default: main
 
 jobs:
   docker:
@@ -22,9 +22,11 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Log the ref
+      - name: Log the event payload
+        env:
+          GITHUB_EVENT: ${{ toJson(github.event) }}
         run: |
-          echo "The ref used for the workflow was ${{ github.event.ref }}"
+          echo "$GITHUB_EVENT"
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
