@@ -9,7 +9,7 @@ on:
         default: Manual testing of the Area Pod Issue Triage action
 
 jobs:
-  build:
+  areapod-issuetriage:
     runs-on: ubuntu-latest
     steps:
       - name: Log the reason for this manual run
