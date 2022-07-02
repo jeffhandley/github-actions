@@ -22,6 +22,10 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Log the ref
+        run: |
+          echo "The ref used for the workflow was ${{ github.event.ref }}"
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
