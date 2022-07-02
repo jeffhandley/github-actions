@@ -17,9 +17,9 @@ jobs:
       packages: read
 
     uses: docker://ghcr.io/jeffhandley/action-playground/areapod-issuetriage:main
-      with:
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      username: ${{ github.actor }}
+      password: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Record the reason for this manual run
