@@ -1,0 +1,14 @@
+name: "Publish Docker Image: areapod-issuetriage"
+
+on: workflow_dispatch
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          file: ./actions/AreaPod/AreaPod.IssueTriage/Dockerfile
+          push: true
+          tags: ghcr.io/jeffhandley/action-playground/areapod-issuetriage:latest
