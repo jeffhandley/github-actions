@@ -16,9 +16,8 @@ jobs:
       contents: read
       packages: read
 
-    container:
-      image: docker://ghcr.io/jeffhandley/action-playground/areapod-issuetriage:main
-      credentials:
+    uses: docker://ghcr.io/jeffhandley/action-playground/areapod-issuetriage:main
+      with:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
