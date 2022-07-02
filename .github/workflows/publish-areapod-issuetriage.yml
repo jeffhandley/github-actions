@@ -2,26 +2,34 @@ name: "Publish: areapod-issuetriage"
 
 on: workflow_dispatch
 
-permissions:
-  contents: read
-  packages: write
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}/action-playground/areapod-issuetriage
+  IMAGE_TAG: ${{ github.ref_name }}
 
 jobs:
   docker-build-push:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
     steps:
       - name: Log job info
+        env:
+          DOCKER_IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
         run: |
-          echo "Building and pushing Docker image with tags:"
-          echo "  ghcr.io/jeffhandley/action-playground/areapod-issuetriage:${{ github.ref_name }}"
+          echo "Building and pushing Docker image:
+          echo "  ${{ env.DOCKER_IMAGE }}"
 
-      - name: Clone repository
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Log in to GitHub Container Registry
+      - name: Log in to the container registry
         uses: docker/login-action@v2
         with:
-          registry: ghcr.io
+          registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
@@ -30,4 +38,4 @@ jobs:
         with:
           context: ./actions/AreaPod/AreaPod.IssueTriage
           push: true
-          tags: ghcr.io/jeffhandley/action-playground/areapod-issuetriage:${{ github.ref_name }}
+          tags: ${{ env.DOCKER_IMAGE }}
