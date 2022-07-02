@@ -14,4 +14,4 @@ jobs:
         with:
           context: ./actions/AreaPod/AreaPod.IssueTriage
           push: false
-          tags: jeffhandley/action-playground/areapod-issuetriage:latest
+          tags: ghcr.io/jeffhandley/action-playground/areapod-issuetriage:latest
