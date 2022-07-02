@@ -19,4 +19,5 @@ LABEL com.github.actions.color="purple"
 # Relayer the .NET SDK with the build output
 FROM mcr.microsoft.com/dotnet/sdk:7.0
 COPY --from=dotnet-sdk /actions/artifacts /actions
-ENTRYPOINT [ "dotnet", "run", "/actions/artifacts/AreaPod.IssueTriage.dll" ]
+WORKDIR "/actions"
+ENTRYPOINT [ "dotnet", "run", "./artifacts/AreaPod.IssueTriage.dll" ]
