@@ -2,6 +2,10 @@ name: "Publish: areapod-issuetriage"
 
 on: workflow_dispatch
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   docker-build-push:
     runs-on: ubuntu-latest
