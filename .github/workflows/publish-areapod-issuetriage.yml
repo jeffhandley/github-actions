@@ -1,4 +1,4 @@
-name: "Publish Docker Image: areapod-issuetriage"
+name: "Publish: areapod-issuetriage"
 
 on: workflow_dispatch
 
