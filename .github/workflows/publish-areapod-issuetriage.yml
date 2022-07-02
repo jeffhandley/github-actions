@@ -17,11 +17,9 @@ jobs:
 
     steps:
       - name: Log job info
-        env:
-          DOCKER_IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
         run: |
           echo "Building and pushing Docker image:"
-          echo "  ${{ env.DOCKER_IMAGE }}"
+          echo "  ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}"
 
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -38,4 +36,4 @@ jobs:
         with:
           context: ./actions/AreaPod/AreaPod.IssueTriage
           push: true
-          tags: ${{ env.DOCKER_IMAGE }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
