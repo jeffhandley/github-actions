@@ -29,4 +29,4 @@ jobs:
           echo 'Reason: ${{ github.event.inputs.reason }}'
 
       - name: Area Pod Issue Triage
-        run: docker run
+        uses: docker://ghcr.io/jeffhandley/action-playground/areapod-issuetriage:main
