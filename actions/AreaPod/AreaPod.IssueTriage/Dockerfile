@@ -4,7 +4,7 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 as dotnet-sdk
 # Copy everything and publish the release (publish implicitly restores and builds)
 COPY . /actions
 WORKDIR "/actions"
-RUN dotnet publish AreaPod.IssueTriage.csproj -c Release -o artifacts --no-self-contained
+RUN dotnet publish AreaPod.IssueTriage.csproj -c Release -o artifacts
 
 # Label the container
 LABEL maintainer="Jeff Handley <jeffhandley@users.noreply.github.com>"
@@ -18,6 +18,5 @@ LABEL com.github.actions.color="purple"
 
 # Relayer the .NET SDK with the build output
 FROM mcr.microsoft.com/dotnet/sdk:7.0
-COPY --from=dotnet-sdk /actions/artifacts /actions
-WORKDIR "/actions"
-ENTRYPOINT [ "dotnet", "run", "./artifacts/AreaPod.IssueTriage.dll" ]
+COPY --from=dotnet-sdk /actions /actions
+ENTRYPOINT [ "./artifacts/AreaPod.IssueTriage.exe" ]
