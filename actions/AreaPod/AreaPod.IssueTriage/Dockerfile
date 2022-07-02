@@ -19,4 +19,4 @@ LABEL com.github.actions.color="purple"
 # Export an image based on the .NET Runtime that has the build-env artifacts included
 FROM mcr.microsoft.com/dotnet/runtime:7.0
 COPY --from=build-env /actions/artifacts /actions
-ENTRYPOINT [ "/actions/AreaPod.IssueTriage.exe" ]
+ENTRYPOINT [ "/actions/artifacts/AreaPod.IssueTriage.exe" ]
