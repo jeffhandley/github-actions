@@ -6,12 +6,7 @@ on:
       reason:
         description: The reason for running the workflow
         required: true
-        default: Manual testing of the Area Pod Issue Triage action
-
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}/action-playground/areapod-issuetriage
-  IMAGE_TAG: main
+        default: Manual run of Area Pod Issue Triage
 
 jobs:
   areapod-issuetriage:
@@ -20,7 +15,7 @@ jobs:
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
         with:
-          registry: ${{ env.REGISTRY }}
+          registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
@@ -30,4 +25,4 @@ jobs:
           echo 'Reason: ${{ github.event.inputs.reason }}'
 
       - name: Area Pod Issue Triage
-        uses: docker://${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+        uses: docker://ghcr.io/jeffhandley/action-playground/areapod-issuetriage:main
