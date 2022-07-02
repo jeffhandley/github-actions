@@ -9,16 +9,6 @@ on:
         default: Manual run of Area Pod Issue Triage
 
 jobs:
-  docker-login:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
   areapod-issuetriage:
     runs-on: ubuntu-latest
     needs: docker-login
@@ -26,6 +16,12 @@ jobs:
     permissions:
       contents: read
       packages: read
+
+    container:
+      image: docker://ghcr.io/jeffhandley/action-playground/areapod-issuetriage:main
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Record the reason for this manual run
