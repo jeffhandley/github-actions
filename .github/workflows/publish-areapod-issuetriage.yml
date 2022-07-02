@@ -9,7 +9,6 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          context: ./actions/AreaPod/AreaPod.IssueTriage
-          file: ./actions/AreaPod/AreaPod.IssueTriage/Dockerfile
+          context: {{defaultContext}}:actions/AreaPod/AreaPod.IssueTriage
           push: false
           tags: jeffhandley/action-playground/areapod-issuetriage:latest
