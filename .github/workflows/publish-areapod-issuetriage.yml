@@ -20,7 +20,7 @@ jobs:
         env:
           DOCKER_IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
         run: |
-          echo "Building and pushing Docker image:
+          echo "Building and pushing Docker image:"
           echo "  ${{ env.DOCKER_IMAGE }}"
 
       - name: Checkout repository
