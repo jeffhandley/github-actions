@@ -10,7 +10,6 @@ on:
 
 jobs:
   areapod-issuetriage:
-    runs-on: ubuntu-20.04
     steps:
       - name: Log the reason for this manual run
         if: ${{ github.event_name == 'workflow_dispatch' }}
@@ -18,5 +17,4 @@ jobs:
           echo 'Reason: ${{ github.event.inputs.reason }}'
 
       - name: Area Pod Issue Triage
-        id: areapod-issuetriage
-        uses: jeffhandley/action-playground/actions/AreaPod/AreaPod.IssueTriage@main
+        uses: docker://ghcr.io/jeffhandley/action-playground/areapod-issuetriage:main
