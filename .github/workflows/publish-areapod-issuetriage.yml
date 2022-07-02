@@ -2,6 +2,9 @@ name: "Publish: areapod-issuetriage"
 
 on: workflow_dispatch
 
+defaults:
+  working-directory: ./actions/AreaPod/AreaPod.IssueTriage
+
 jobs:
   docker:
     runs-on: ubuntu-latest
@@ -9,6 +12,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          context: /actions/AreaPod/AreaPod.IssueTriage
-          push: true
-          tags: ghcr.io/jeffhandley/action-playground/areapod-issuetriage:latest
+          file: actions/AreaPod/AreaPod.IssueTriage/Dockerfile
+          context: .
+          push: false
+          tags: jeffhandley/action-playground/areapod-issuetriage:latest
