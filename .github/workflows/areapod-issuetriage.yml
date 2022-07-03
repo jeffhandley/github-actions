@@ -15,3 +15,4 @@ jobs:
         uses: jeffhandley/action-playground/actions/AreaPod/AreaPod.IssueTriage@main
         with:
           pod: "${{ matrix.pod }}"
+          issue_number: 34
