@@ -7,29 +7,17 @@ on:
         description: The docker image tag to use
         required: true
         default: main
-      action:
-        description: Action to run in the container
-        required: true
-        default: areapod-issuetriage
 
 jobs:
   areapod-issuetriage:
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: read
-      packages: read
-
-    container:
-      image: docker://ghcr.io/jeffhandley/action-playground/areapod-issuetriage:${{ github.event.inputs.dockertag }}
-      credentials:
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-    
     strategy:
       matrix:
         pod: ["adam/david", "buyaa/jose/steve", "akhil/carlos/viktor"]
 
     steps:
       - name: Area Pod Issue Triage
-        run: ${{ github.event.inputs.action }} --pod "${{ matrix.pod }}"
+        uses: docker://ghcr.io/jeffhandley/action-playground/areapod-issuetriage:${{ github.event.inputs.dockertag }}
+        with:
+          args: --pod "{{ matrix.pod }}""
