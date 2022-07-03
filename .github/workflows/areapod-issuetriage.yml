@@ -3,6 +3,10 @@ name: Area Pod Issue Triage
 on:
   workflow_dispatch:
     inputs:
+      dockertag:
+        description: The docker image tag to use
+        required: true
+        default: main
       reason:
         description: The reason for running the workflow
         required: true
@@ -21,7 +25,7 @@ jobs:
       packages: read
 
     container:
-      image: docker://ghcr.io/jeffhandley/action-playground/areapod-issuetriage:main
+      image: docker://ghcr.io/jeffhandley/action-playground/areapod-issuetriage:${{ github.event.inputs.dockertag }}
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
