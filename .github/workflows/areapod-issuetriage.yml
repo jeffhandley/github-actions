@@ -7,6 +7,10 @@ on:
         description: The reason for running the workflow
         required: true
         default: Manual run of Area Pod Issue Triage
+      command:
+        description: Command to run in the container
+        required: true
+        default: echo $PATH
 
 jobs:
   areapod-issuetriage:
@@ -29,4 +33,4 @@ jobs:
           echo 'Reason: ${{ github.event.inputs.reason }}'
 
       - name: Area Pod Issue Triage
-        run: areapod-issuetriage --pod "meta"
+        run: ${{ github.event.inputs.command }}
