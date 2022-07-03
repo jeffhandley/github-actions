@@ -12,6 +12,6 @@ jobs:
 
     steps:
       - name: Area Pod Issue Triage
-        uses: jeffhandley/action-playground/actions/AreaPod/AreaPod.IssueTriage
+        uses: jeffhandley/action-playground/actions/AreaPod/AreaPod.IssueTriage@main
         with:
           pod: "${{ matrix.pod }}"
