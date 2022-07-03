@@ -3,7 +3,7 @@ name: Area Pod Issue Triage
 on:
   workflow_dispatch:
     inputs:
-      issue_number:
+      issue:
         description: Issue number
         type: number
         required: true
@@ -16,4 +16,4 @@ jobs:
       - name: Area Pod Issue Triage
         uses: jeffhandley/action-playground/actions/AreaPod/AreaPod.IssueTriage@main
         with:
-          issue: ${{ github.event.inputs.issue_number }}
+          issue: ${{ github.event.inputs.issue }}

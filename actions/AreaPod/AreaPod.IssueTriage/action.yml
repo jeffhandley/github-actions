@@ -5,16 +5,14 @@ inputs:
     description: The GITHUB_TOKEN secret to use for connecting to GitHub APIs
     required: true
     default: ${{ github.token }}
-  pod:
-    description: The area pod to run issue triage for
-    required: true
-  issue_number:
+  issue:
     description: The issue number to triage
     required: true
+    type: number
 
 runs:
   using: docker
   image: docker://ghcr.io/jeffhandley/action-playground/areapod-issuetriage:main
-  args: [ "--pod", "${{ inputs.pod }}", "--issue", "${{ inputs.issue_number }}" ]
+  args: [ "--issue", "${{ inputs.issue }}" ]
   env:
     GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
