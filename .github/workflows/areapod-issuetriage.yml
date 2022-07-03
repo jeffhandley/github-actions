@@ -6,15 +6,11 @@ on:
       dockertag:
         description: The docker image tag to use
         required: true
-        default: main
-      reason:
-        description: The reason for running the workflow
-        required: true
-        default: Manual run of Area Pod Issue Triage
+        default: ${{ github.ref_name }}
       command:
         description: Command to run in the container
         required: true
-        default: /actions/AreaPod.IssueTriage
+        default: areapod-issuetriage
 
 jobs:
   areapod-issuetriage:
