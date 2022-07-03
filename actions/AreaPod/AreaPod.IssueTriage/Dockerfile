@@ -1,17 +1,20 @@
-# Set the base image as the .NET 7.0 SDK (this includes the runtime)
-FROM mcr.microsoft.com/dotnet/sdk:7.0 as build-artifacts
+# Create a build-artifacts image that has the .NET SDK installed
+FROM mcr.microsoft.com/dotnet/sdk:7.0 as actions-build
 
 # Install NativeAOT build prerequisites
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     clang zlib1g-dev
 
-# Copy everything and publish the release (publish implicitly restores and builds)
-COPY . /actions
-WORKDIR /actions
+# Copy the contents of the local folder into the /actions folder in the image
+COPY . /actions-build
+WORKDIR /actions-build
+
+# Build/Publish the self-contained NativeAOT image for ubuntu:20.04
 RUN dotnet publish AreaPod.IssueTriage.csproj -c Release -o artifacts -r ubuntu.20.04-x64 --sc
 
-# Export an image based on the .NET SDK that has the build artifacts included
+# Export an image based on ubuntu:20.04 that has the /actions/areapod-issuetriage executable added
 FROM ubuntu:20.04
-COPY --from=build-artifacts /actions/artifacts/AreaPod.IssueTriage ./actions/areapod-issuetriage
-ENV PATH=${PATH}:/actions
+COPY --from=actions-build /actions-build/artifacts/AreaPod.IssueTriage ./actions/areapod-issuetriage
+ENV ACTIONS_PATH=/actions
+RUN PATH=${PATH}:${ACTIONS_PATH}
