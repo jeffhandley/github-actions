@@ -10,7 +10,7 @@
     <PublishAOT>true</PublishAOT>
     <AssemblyName>areapod-issuetriage</AssemblyName>
     <DebugMode>none</DebugMode>
-    <PublishTrimmed>true</PublishTrimmed>
+    <PublishTrimmed>false</PublishTrimmed>
     <InvariantGlobalization>true</InvariantGlobalization>
     <TrimmerDefaultAction>link</TrimmerDefaultAction>
     <IlcOptimizationPreference>Speed</IlcOptimizationPreference>
