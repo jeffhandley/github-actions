@@ -6,6 +6,15 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <PropertyGroup Label="Publish Optimizations" Condition="'$(PublishAOT)' == 'true'">
+    <AssemblyName>areapod-issuetriage</AssemblyName>
+    <DebugMode>none</DebugMode>
+    <PublishTrimmed>true</PublishTrimmed>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <TrimmerDefaultAction>link</TrimmerDefaultAction>
+    <IlcOptimizationPreference>Speed</IlcOptimizationPreference>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
   </ItemGroup>
