@@ -10,7 +10,7 @@ on:
       command:
         description: Command to run in the container
         required: true
-        default: echo $PATH
+        default: /actions/AreaPod.IssueTriage
 
 jobs:
   areapod-issuetriage:
@@ -27,10 +27,5 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      - name: Record the reason for this manual run
-        if: ${{ github.event_name == 'workflow_dispatch' }}
-        run: |
-          echo 'Reason: ${{ github.event.inputs.reason }}'
-
       - name: Area Pod Issue Triage
         run: ${{ github.event.inputs.command }}
