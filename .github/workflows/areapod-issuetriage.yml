@@ -6,7 +6,7 @@ on:
       dockertag:
         description: The docker image tag to use
         required: true
-        default: ${{ github.ref_name }}
+        default: main
       command:
         description: Command to run in the container
         required: true
