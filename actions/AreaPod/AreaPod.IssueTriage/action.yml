@@ -7,5 +7,5 @@ inputs:
 
 runs:
   using: docker
-  image: Dockerfile
+  image: docker://ghcr.io/jeffhandley/action-playground/areapod-issuetriage:main
   args: [ "--pod", "${{ inputs.pod }}" ]

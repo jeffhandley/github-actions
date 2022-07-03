@@ -12,6 +12,6 @@ jobs:
 
     steps:
       - name: Area Pod Issue Triage
-        uses: docker://ghcr.io/jeffhandley/action-playground/areapod-issuetriage:main
+        uses: jeffhandley/action-playground/actions/AreaPod/AreaPod.IssueTriage@main
         with:
           pod: "${{ matrix.pod }}"
