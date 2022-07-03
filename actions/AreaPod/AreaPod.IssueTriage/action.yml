@@ -4,8 +4,11 @@ inputs:
   pod:
     description: The area pod to run issue triage for
     required: true
+  issue_number:
+    description: The issue number to triage
+    required: true
 
 runs:
   using: docker
   image: docker://ghcr.io/jeffhandley/action-playground/areapod-issuetriage:main
-  args: [ "--pod", "${{ inputs.pod }}" ]
+  args: [ "--pod", "${{ inputs.pod }}", "--issue", "${{ inputs.issue_number }}" ]

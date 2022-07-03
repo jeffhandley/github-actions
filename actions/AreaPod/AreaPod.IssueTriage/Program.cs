@@ -6,7 +6,7 @@ namespace AreaPod.IssueTriage
     {
         static void Main(string[] args)
         {
-            Console.WriteLine($"Hello, World! {string.Join(' ', args)}");
+            Console.WriteLine($"Triaging Issue for Pod: {string.Join(' ', args)}");
         }
     }
 }
