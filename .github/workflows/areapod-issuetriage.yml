@@ -1,12 +1,6 @@
 name: Area Pod Issue Triage
 
-on:
-  workflow_dispatch:
-    inputs:
-      dockertag:
-        description: The docker image tag to use
-        required: true
-        default: main
+on: workflow_dispatch
 
 jobs:
   areapod-issuetriage:
@@ -18,6 +12,6 @@ jobs:
 
     steps:
       - name: Area Pod Issue Triage
-        uses: docker://ghcr.io/jeffhandley/action-playground/areapod-issuetriage:${{ github.event.inputs.dockertag }}
+        uses: docker://ghcr.io/jeffhandley/action-playground/areapod-issuetriage:main
         with:
           args: --pod "{{ matrix.pod }}""
