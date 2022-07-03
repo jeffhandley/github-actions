@@ -1,5 +1,11 @@
 name: .NET Org Area Pod Issue Triage
 description: A GitHub action that drives the .NET org's area pod issue triage process
+inputs:
+  pod:
+    description: The area pod to run issue triage for
+    required: true
+
 runs:
   using: docker
   image: Dockerfile
+  args: [ "--pod", "${{ inputs.pod }}" ]
