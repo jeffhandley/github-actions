@@ -7,8 +7,8 @@ on:
         description: The docker image tag to use
         required: true
         default: main
-      command:
-        description: Command to run in the container
+      action:
+        description: Action to run in the container
         required: true
         default: areapod-issuetriage
 
@@ -25,7 +25,11 @@ jobs:
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
+    
+    strategy:
+      matrix:
+        pod: ["adam/david", "buyaa/jose/steve", "akhil/carlos/viktor"]
 
     steps:
       - name: Area Pod Issue Triage
-        run: ${{ github.event.inputs.command }}
+        run: ${{ github.event.inputs.action }} --pod "${{ matrix.pod }}"
