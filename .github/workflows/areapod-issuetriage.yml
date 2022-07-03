@@ -12,13 +12,8 @@ jobs:
   areapod-issuetriage:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        pod: ["adam/david", "buyaa/jose/steve", "akhil/carlos/viktor"]
-
     steps:
       - name: Area Pod Issue Triage
         uses: jeffhandley/action-playground/actions/AreaPod/AreaPod.IssueTriage@main
         with:
-          pod: "${{ matrix.pod }}"
-          issue_number: ${{ github.event.inputs.issue_number }}
+          issue: ${{ github.event.inputs.issue_number }}
