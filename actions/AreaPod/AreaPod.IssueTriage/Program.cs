@@ -1,23 +1,20 @@
 ﻿using System;
+using System.CommandLine;
+using System.Threading.Tasks;
 
-namespace AreaPod.IssueTriage
+namespace AreaPod.IssueTriage;
+
+internal class Program
 {
-    internal class Program
+    static async Task Main(string[] args)
     {
-        static void Main(string[] args)
-        {
-            Console.WriteLine($"Triaging Issue for Pod: {string.Join(' ', args)}");
+        string? GITHUB_TOKEN = Environment.GetEnvironmentVariable("GITHUB_TOKEN");
+        
+        var issueArg = new Option<int?>(new[] { "--issue", "-i" }, "The issue number to process") { IsRequired = true };
+        var issueCommand = new RootCommand("Area Pod issue triage");
+        issueCommand.Add(issueArg);
+        issueCommand.SetHandler(issue => Console.WriteLine($"Processing issue number: {issue}"), issueArg);
 
-            string? GITHUB_TOKEN = Environment.GetEnvironmentVariable("GITHUB_TOKEN");
-
-            if (GITHUB_TOKEN is null)
-            {
-                Console.WriteLine("No GITHUB_TOKEN available");
-            }
-            else
-            {
-                Console.WriteLine("GITHUB_TOKEN available");
-            }
-        }
+        await issueCommand.InvokeAsync(args);
     }
 }

@@ -11,11 +11,11 @@ COPY . /actions-build
 WORKDIR /actions-build
 
 # Build/Publish the self-contained NativeAOT image for ubuntu:20.04
-RUN dotnet publish AreaPod.IssueTriage.csproj -c Release -o artifacts -r ubuntu.20.04-x64 --sc
+RUN dotnet publish -c Release -o artifacts -r ubuntu.20.04-x64 --sc -p:PublishAOT=true -p:PublishTrimmed=true -p:AssemblyName=areapod-issuetriage
 
 # Export an image based on ubuntu:20.04 that has the /actions/areapod-issuetriage executable added
 FROM ubuntu:20.04
-COPY --from=actions-build /actions-build/artifacts/AreaPod.IssueTriage /actions/areapod-issuetriage
+COPY --from=actions-build /actions-build/artifacts/areapod-issuetriage /actions/areapod-issuetriage
 ENV PATH=$PATH:/actions
 
 ENTRYPOINT [ "/actions/areapod-issuetriage" ]
