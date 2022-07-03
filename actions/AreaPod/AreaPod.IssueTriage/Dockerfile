@@ -15,6 +15,6 @@ RUN dotnet publish AreaPod.IssueTriage.csproj -c Release -o artifacts -r ubuntu.
 
 # Export an image based on ubuntu:20.04 that has the /actions/areapod-issuetriage executable added
 FROM ubuntu:20.04
-COPY --from=actions-build /actions-build/artifacts/AreaPod.IssueTriage ./actions/areapod-issuetriage
+COPY --from=actions-build /actions-build/artifacts/AreaPod.IssueTriage /actions/areapod-issuetriage
 ENV ACTIONS_PATH=/actions
-RUN PATH=${PATH}:${ACTIONS_PATH}
+ENV PATH=${PATH}:${ACTIONS_PATH}
