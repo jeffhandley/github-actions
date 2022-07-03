@@ -13,5 +13,5 @@ RUN dotnet publish AreaPod.IssueTriage.csproj -c Release -o artifacts -r ubuntu.
 
 # Export an image based on the .NET SDK that has the build artifacts included
 FROM mcr.microsoft.com/dotnet/runtime-deps:7.0
-COPY --from=build-artifacts /actions/artifacts /actions
-ENTRYPOINT [ "/actions/AreaPod.IssueTriage" ]
+COPY --from=build-artifacts /actions/artifacts/AreaPod.IssueTriage ./actions/areapod-issuetriage
+ENV PATH=$PATH:/actions
