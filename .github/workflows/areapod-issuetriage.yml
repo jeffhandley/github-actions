@@ -14,4 +14,4 @@ jobs:
       - name: Area Pod Issue Triage
         uses: docker://ghcr.io/jeffhandley/action-playground/areapod-issuetriage:main
         with:
-          args: --pod "{{ matrix.pod }}""
+          args: --pod "${{ matrix.pod }}""
