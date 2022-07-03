@@ -12,3 +12,5 @@ runs:
   using: docker
   image: docker://ghcr.io/jeffhandley/action-playground/areapod-issuetriage:main
   args: [ "--pod", "${{ inputs.pod }}", "--issue", "${{ inputs.issue_number }}" ]
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
