@@ -6,7 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <PropertyGroup Label="Publish Optimizations" Condition="'$(PublishAOT)' == 'true'">
+  <PropertyGroup Label="Publish Optimizations" Condition="'$(RuntimeIdentifier)' != ''">
+    <PublishAOT>true</PublishAOT>
     <AssemblyName>areapod-issuetriage</AssemblyName>
     <DebugMode>none</DebugMode>
     <PublishTrimmed>true</PublishTrimmed>
