@@ -1,6 +1,10 @@
 name: .NET Org Area Pod Issue Triage
 description: A GitHub action that drives the .NET org's area pod issue triage process
 inputs:
+  GITHUB_TOKEN:
+    description: The GITHUB_TOKEN secret to use for connecting to GitHub APIs
+    required: true
+    default: ${{ github.token }}
   pod:
     description: The area pod to run issue triage for
     required: true
@@ -13,4 +17,4 @@ runs:
   image: docker://ghcr.io/jeffhandley/action-playground/areapod-issuetriage:main
   args: [ "--pod", "${{ inputs.pod }}", "--issue", "${{ inputs.issue_number }}" ]
   env:
-    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
