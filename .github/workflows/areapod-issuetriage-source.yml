@@ -1,4 +1,4 @@
-name: Area Pod Issue Triage
+name: Area Pod Issue Triage (from source)
 
 on:
   workflow_dispatch:
@@ -14,6 +14,6 @@ jobs:
 
     steps:
       - name: Area Pod Issue Triage
-        uses: jeffhandley/action-playground/actions/AreaPod/AreaPod.IssueTriage@main
+        uses: jeffhandley/action-playground/actions/AreaPod/AreaPod.IssueTriage/source@main
         with:
           issue: ${{ github.event.inputs.issue }}
