@@ -13,9 +13,9 @@ WORKDIR /actions-build
 # Build/Publish the self-contained NativeAOT image for ubuntu:20.04
 RUN dotnet publish -c Release -o artifacts -r ubuntu.20.04-x64 --sc
 
-# Export an image based on ubuntu:20.04 that has the /actions/areapod-issuetriage executable added
-FROM ubuntu:20.04
-COPY --from=actions-build /actions-build/artifacts/areapod-issuetriage /actions/areapod-issuetriage
-ENV PATH=$PATH:/actions
+# Export an image that includes the .NET native dependencies as well as the build artifacts
+FROM mcr.microsoft.com/dotnet/runtime-deps:7.0
+COPY --from=actions-build /actions-build/artifacts /actions
 
+ENV PATH=$PATH:/actions
 ENTRYPOINT [ "/actions/areapod-issuetriage" ]
