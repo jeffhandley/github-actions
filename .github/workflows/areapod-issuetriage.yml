@@ -7,27 +7,22 @@ on:
         description: Issue number
         required: true
         type: number
-      host:
-        description: Use deployed docker image or source?
+      actionref:
+        description: Action reference
         required: true
+        default: "@main"
         type: choice
         options:
-        - docker
-        - source
+        - "@main"
+        - "/source@main"
 
 jobs:
   areapod-issuetriage:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Area Pod Issue Triage (from docker)
+      - name: Area Pod Issue Triage
         if: ${{ github.event.inputs.host == 'docker' }}
-        uses: jeffhandley/action-playground/actions/AreaPod/AreaPod.IssueTriage@main
-        with:
-          issue: ${{ github.event.inputs.issue }}
-
-      - name: Area Pod Issue Triage (from repo source)
-        if: ${{ github.event.inputs.host == 'source' }}
-        uses: jeffhandley/action-playground/actions/AreaPod/AreaPod.IssueTriage/source@main
+        uses: jeffhandley/action-playground/actions/AreaPod/AreaPod.IssueTriage${{ github.event.inputs.actionref }}
         with:
           issue: ${{ github.event.inputs.issue }}
