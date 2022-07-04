@@ -48,7 +48,6 @@ internal class Program
                     issue.Number,
                     issue.Title,
                     issue.Closed,
-                    issue.State,
                     issue.AuthorAssociation,
                     Milestone = issue.Milestone.Select(milestone => milestone.Title).SingleOrDefault(),
                     Author = issue.Author.Select(author => author.Login).Single(),
