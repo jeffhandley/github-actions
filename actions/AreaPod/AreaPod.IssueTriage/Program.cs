@@ -7,6 +7,7 @@ using Octokit.GraphQL.Model;
 using static Octokit.GraphQL.Variable;
 using Env = System.Environment;
 using AreaPod.IssueTriage.Models;
+using System.Linq;
 
 namespace AreaPod.IssueTriage;
 
@@ -47,6 +48,7 @@ internal class Program
             .Issue(Var("issue_number"))
             .Select(issue => new IssueForTriage
             {
+                Id = issue.Id,
                 Number = issue.Number,
                 Closed = issue.Closed,
                 Milestone = issue.Milestone.Select(milestone => milestone.Title).SingleOrDefault(),
@@ -62,9 +64,10 @@ internal class Program
                     .AllPages()
                     .Select(card => new ProjectCardClassic
                     {
-                        Id = card.Id.Value,
+                        Id = card.Id,
                         ProjectName = card.Project.Name,
                         ProjectNumber = card.Project.Number,
+                        ColumnId = card.Column.Select(column => column.Id).SingleOrDefault(),
                         ColumnName = card.Column.Select(column => column.Name).SingleOrDefault(),
                         IsArchived = card.IsArchived,
                     })
@@ -91,6 +94,27 @@ internal class Program
         foreach (var pc in issue.ProjectColumns)
         {
             Console.WriteLine($"  On Project '{pc.ProjectName}' ({pc.ProjectNumber}) in Column '{pc.ColumnName}'{(pc.IsArchived ? " [Archive]" : "")}");
+        }
+
+        if (issue.ProjectColumns.Any())
+        {
+            var card = issue.ProjectColumns.First();
+            var archive = new UpdateProjectCardInput { ProjectCardId = card.Id, IsArchived = !card.IsArchived };
+            var mutation = new Mutation()
+                .UpdateProjectCard(Var("card"))
+                .Select(result => new
+                {
+                    result.ProjectCard.State
+                })
+                .Compile();
+
+            var mutationValues = new Dictionary<string, object>
+            {
+                { "card", archive }
+            };
+
+            var result = await connection.Run(mutation, mutationValues);
+            Console.WriteLine($"    Card State Updated: {result.State?.ToString()}");
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿#nullable disable warnings
 
 using System.Collections.Generic;
+using Octokit.GraphQL;
 using Octokit.GraphQL.Model;
 using AreaPod.IssueTriage.Rules;
 
@@ -8,6 +9,7 @@ namespace AreaPod.IssueTriage.Models;
 
 internal class IssueForTriage
 {
+    public ID Id { get; set; }
     public int Number { get; init; }
     public bool Closed { get; init; }
     public string? Milestone { get; init; }
