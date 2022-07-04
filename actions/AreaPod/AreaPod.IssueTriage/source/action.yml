@@ -1,11 +1,6 @@
 name: .NET Org Area Pod Issue Triage
 description: A GitHub action that drives the .NET org's area pod issue triage process
 
-permissions:
-  issues: write
-  pull-requests: write
-  repository-projects: write
-
 inputs:
   GITHUB_TOKEN:
     description: The GITHUB_TOKEN secret to use for connecting to GitHub APIs

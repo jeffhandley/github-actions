@@ -104,7 +104,7 @@ internal class Program
                 .UpdateProjectCard(Var("card"))
                 .Select(result => new
                 {
-                    result.ProjectCard.State
+                    result.ProjectCard.IsArchived
                 })
                 .Compile();
 
@@ -114,7 +114,7 @@ internal class Program
             };
 
             var result = await connection.Run(mutation, mutationValues);
-            Console.WriteLine($"    Card State Updated: {result.State?.ToString()}");
+            Console.WriteLine($"    Card State Updated: {(result.IsArchived ? "Archived" : "Unarchived")}");
         }
     }
 }
