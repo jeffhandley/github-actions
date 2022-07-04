@@ -7,12 +7,11 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Publish Optimizations" Condition="'$(RuntimeIdentifier)' != ''">
-    <PublishAOT>true</PublishAOT>
     <AssemblyName>areapod-issuetriage</AssemblyName>
-    <DebugMode>none</DebugMode>
+    <PublishAOT>false</PublishAOT>
     <PublishTrimmed>false</PublishTrimmed>
+    <DebugMode>none</DebugMode>
     <InvariantGlobalization>true</InvariantGlobalization>
-    <TrimmerDefaultAction>link</TrimmerDefaultAction>
     <IlcOptimizationPreference>Speed</IlcOptimizationPreference>
   </PropertyGroup>
 
