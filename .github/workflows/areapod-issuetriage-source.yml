@@ -1,5 +1,9 @@
 name: Area Pod Issue Triage (from source)
 
+permissions:
+  issues: write
+  pull-requests: write
+
 on:
   workflow_dispatch:
     inputs:
