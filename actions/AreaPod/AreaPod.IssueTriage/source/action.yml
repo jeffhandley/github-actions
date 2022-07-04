@@ -12,7 +12,7 @@ inputs:
 
 runs:
   using: docker
-  image: Dockerfile
+  image: ../Dockerfile
   args: [ "--issue", "${{ inputs.issue }}" ]
   env:
     GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}

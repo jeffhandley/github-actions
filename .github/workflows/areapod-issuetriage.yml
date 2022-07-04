@@ -8,7 +8,7 @@ on:
         required: true
         type: number
       host:
-        description: Run from the deployed docker image or from source?
+        description: Use deployed docker image or source?
         required: true
         type: choice
         options:
@@ -28,6 +28,6 @@ jobs:
 
       - name: Area Pod Issue Triage (from repo source)
         if: ${{ github.event.inputs.host == 'source' }}
-        uses: jeffhandley/action-playground/actions/AreaPod/AreaPod.IssueTriage/source.yml@main
+        uses: jeffhandley/action-playground/actions/AreaPod/AreaPod.IssueTriage/source@main
         with:
           issue: ${{ github.event.inputs.issue }}
