@@ -53,9 +53,22 @@ internal class Program
                 Labels = issue
                     .Labels(null, null, null, null, new LabelOrder { Field = LabelOrderField.Name, Direction = OrderDirection.Asc })
                     .AllPages()
-                    .Select(label => label.Name).ToList()!,
+                    .Select(label => label.Name)
+                    .ToList(),
                 Author = issue.Author.Select(author => author.Login).Single()!,
                 AuthorAssociation = issue.AuthorAssociation,
+                ProjectColumns = issue
+                    .ProjectCards(null, null, null, null, null)
+                    .AllPages()
+                    .Select(card => new ProjectCardClassic
+                    {
+                        Id = card.Id.Value,
+                        ProjectName = card.Project.Name,
+                        ProjectNumber = card.Project.Number,
+                        ColumnName = card.Column.Select(column => column.Name).SingleOrDefault(),
+                        IsArchived = card.IsArchived,
+                    })
+                    .ToList(),
             }).Compile();
 
         var values = new Dictionary<string, object>
@@ -74,5 +87,10 @@ internal class Program
         Console.WriteLine($"  Author: {issue.Author}");
         Console.WriteLine($"  Author Association: {issue.AuthorAssociation.ToString()}");
         Console.WriteLine($"  Needs Triage: {(issue.NeedsTriage ? "Yes" : "No")}");
+        
+        foreach (var pc in issue.ProjectColumns)
+        {
+            Console.WriteLine($"  On Project '{pc.ProjectName}' ({pc.ProjectNumber}) in Column '{pc.ColumnName}'{(pc.IsArchived ? " [Archive]" : "")}");
+        }
     }
 }

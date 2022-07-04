@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿#nullable disable warnings
+
+using System.Collections.Generic;
 using Octokit.GraphQL.Model;
 using AreaPod.IssueTriage.Rules;
 
@@ -10,10 +12,9 @@ internal class IssueForTriage
     public bool Closed { get; init; }
     public string? Milestone { get; init; }
 
-#nullable disable
     public List<string> Labels { get; init; }
     public string Author { get; init; }
-#nullable restore
+    public List<ProjectCardClassic> ProjectColumns { get; init; }
 
     public CommentAuthorAssociation? AuthorAssociation { get; init; }
 
