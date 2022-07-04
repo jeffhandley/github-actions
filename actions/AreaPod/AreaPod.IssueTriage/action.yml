@@ -4,6 +4,7 @@ description: A GitHub action that drives the .NET org's area pod issue triage pr
 permissions:
   issues: write
   pull-requests: write
+  repository-projects: write
 
 inputs:
   GITHUB_TOKEN:
