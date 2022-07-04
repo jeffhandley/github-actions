@@ -5,15 +5,29 @@ on:
     inputs:
       issue:
         description: Issue number
-        type: number
         required: true
+        type: number
+      host:
+        description: Action host (already deployed to docker, or repo source)
+        required: true
+        type: choice
+        options:
+        - docker
+        - source
 
 jobs:
   areapod-issuetriage:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Area Pod Issue Triage
+      - name: Area Pod Issue Triage (from docker)
+        if: ${{ github.event.inputs.host == 'docker' }}
         uses: jeffhandley/action-playground/actions/AreaPod/AreaPod.IssueTriage@main
+        with:
+          issue: ${{ github.event.inputs.issue }}
+
+      - name: Area Pod Issue Triage (from repo source)
+        if: ${{ github.event.inputs.host == 'source' }}
+        uses: jeffhandley/action-playground/actions/AreaPod/AreaPod.IssueTriage/source@main
         with:
           issue: ${{ github.event.inputs.issue }}
