@@ -6,6 +6,7 @@ using Octokit.GraphQL;
 using Octokit.GraphQL.Model;
 using static Octokit.GraphQL.Variable;
 using Env = System.Environment;
+using AreaPod.IssueTriage.Models;
 
 namespace AreaPod.IssueTriage;
 
@@ -13,7 +14,7 @@ internal class Program
 {
     static string GITHUB_TOKEN => Env.GetEnvironmentVariable("GITHUB_TOKEN")!;
 
-    static async Task Main(string[] args)
+    static async Task<int> Main(string[] args)
     {
         string? GITHUB_TOKEN = Env.GetEnvironmentVariable("GITHUB_TOKEN");
 
@@ -23,53 +24,55 @@ internal class Program
         }
         
         var issueArg = new Option<uint>(new[] { "--issue", "-i" }, "The issue number to process") { IsRequired = true };
-        var issueCommand = new RootCommand("Area Pod issue triage");
-        issueCommand.Add(issueArg);
-        issueCommand.SetHandler(GetIssue, issueArg);
+        var actionArg = new Option<IssueAction?>(new[] { "--action", "-a" }, "The issue action");
 
-        await issueCommand.InvokeAsync(args);
+        var triageCommand = new RootCommand("Area Pod issue triage");
+        triageCommand.Add(issueArg);
+        triageCommand.Add(actionArg);
+        triageCommand.SetHandler(HandleIssueTriage, issueArg, actionArg);
+
+        return await triageCommand.InvokeAsync(args);
     }
 
-    static async Task GetIssue(uint issueNumber)
+    static async Task HandleIssueTriage(uint issueNumber, IssueAction? action)
     {
         Console.WriteLine($"Processing issue number: {issueNumber}");
 
-        try
-        {
-            var appInfo = new ProductHeaderValue("AreaPod.IssueTriage");
-            var connection = new Connection(appInfo, GITHUB_TOKEN);
+        var appInfo = new ProductHeaderValue("AreaPod.IssueTriage");
+        var connection = new Connection(appInfo, GITHUB_TOKEN);
 
-            var query = new Query()
-                .RepositoryOwner(Var("owner"))
-                .Repository(Var("repo"))
-                .Issue(Var("issue_number"))
-                .Select(issue => new
-                {
-                    issue.Number,
-                    issue.Title,
-                    issue.Closed,
-                    issue.AuthorAssociation,
-                    Milestone = issue.Milestone.Select(milestone => milestone.Title).SingleOrDefault(),
-                    Author = issue.Author.Select(author => author.Login).Single(),
-                    Labels = issue
-                        .Labels(null, null, null, null, new LabelOrder { Field = LabelOrderField.Name, Direction = OrderDirection.Asc })
-                        .AllPages()
-                        .Select(label => label.Name).ToList()
-                }).Compile();
-
-            var values = new Dictionary<string, object>
+        var query = new Query()
+            .RepositoryOwner(Var("owner"))
+            .Repository(Var("repo"))
+            .Issue(Var("issue_number"))
+            .Select(issue => new IssueForTriage
             {
-                { "owner", "jeffhandley" },
-                { "repo", "action-playground" },
-                { "issue_number", issueNumber }
-            };
+                Number = issue.Number,
+                Closed = issue.Closed,
+                Milestone = issue.Milestone.Select(milestone => milestone.Title).SingleOrDefault(),
+                Labels = issue
+                    .Labels(null, null, null, null, new LabelOrder { Field = LabelOrderField.Name, Direction = OrderDirection.Asc })
+                    .AllPages()
+                    .Select(label => label.Name).ToList()!,
+                Author = issue.Author.Select(author => author.Login).Single()!,
+                AuthorAssociation = issue.AuthorAssociation,
+            }).Compile();
 
-            var issue = await connection.Run(query, values);
-            Console.WriteLine($"Fetched issue {issue.Number}: {issue.Title}. Labels: {string.Join(", ", issue.Labels)}");
-        }
-        catch
+        var values = new Dictionary<string, object>
         {
-            throw;
-        }
+            { "owner", "jeffhandley" },
+            { "repo", "action-playground" },
+            { "issue_number", issueNumber }
+        };
+
+        var issue = await connection.Run(query, values);
+
+        Console.WriteLine($"Issue {issue.Number} was {action?.ToString() ?? "processed"}");
+        Console.WriteLine($"  State: {(issue.Closed ? "Closed" : "Open")}");
+        Console.WriteLine($"  Milestone: {issue.Milestone ?? "<none>"}");
+        Console.WriteLine($"  Labels: {string.Join(", ", issue.Labels)}");
+        Console.WriteLine($"  Author: {issue.Author}");
+        Console.WriteLine($"  Author Association: {issue.AuthorAssociation.ToString()}");
+        Console.WriteLine($"  Needs Triage: {(issue.NeedsTriage ? "Yes" : "No")}");
     }
 }
