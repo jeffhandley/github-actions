@@ -3,7 +3,6 @@ name: Area Pod Issue Triage (from source)
 permissions:
   issues: write
   pull-requests: write
-  repository-projects: write
 
 on:
   workflow_dispatch:
