@@ -8,36 +8,52 @@ using static Octokit.GraphQL.Variable;
 using Env = System.Environment;
 using AreaPod.IssueTriage.Models;
 using System.Linq;
+using AreaPod.IssueTriage.Rules;
 
 namespace AreaPod.IssueTriage;
 
 internal class Program
 {
+    static string GITHUB_ACTOR => Env.GetEnvironmentVariable("GITHUB_ACTOR")!;
     static string GITHUB_TOKEN => Env.GetEnvironmentVariable("GITHUB_TOKEN")!;
 
     static async Task<int> Main(string[] args)
     {
+        string? GITHUB_ACTOR = Env.GetEnvironmentVariable("GITHUB_ACTOR");
         string? GITHUB_TOKEN = Env.GetEnvironmentVariable("GITHUB_TOKEN");
 
-        if (string.IsNullOrWhiteSpace(GITHUB_TOKEN))
+        if (string.IsNullOrWhiteSpace(GITHUB_ACTOR) || string.IsNullOrWhiteSpace(GITHUB_TOKEN))
         {
-            throw new ArgumentException("Missing environment variable: GITHUB_TOKEN");
+            throw new ArgumentException("Missing environment variable. GITHUB_ACTOR and GITHUB_TOKEN are required");
         }
-        
+
         var issueArg = new Option<uint>(new[] { "--issue", "-i" }, "The issue number to process") { IsRequired = true };
         var actionArg = new Option<IssueAction?>(new[] { "--action", "-a" }, "The issue action");
+        var assigneeArg = new Option<string?>("--assignee", "The assignee added or removed");
+        var labelArg = new Option<string?>("--label", "The label added or removed");
 
-        var triageCommand = new RootCommand("Area Pod issue triage");
-        triageCommand.Add(issueArg);
-        triageCommand.Add(actionArg);
-        triageCommand.SetHandler(HandleIssueTriage, issueArg, actionArg);
+        var triageCommand = new RootCommand("Area Pod issue triage") { issueArg, actionArg, assigneeArg, labelArg };
+        triageCommand.SetHandler(HandleIssueTriage, issueArg, actionArg, assigneeArg, labelArg);
 
         return await triageCommand.InvokeAsync(args);
     }
 
-    static async Task HandleIssueTriage(uint issueNumber, IssueAction? action)
+    static async Task HandleIssueTriage(uint issueNumber, IssueAction? action, string? assignee, string? label)
     {
-        Console.WriteLine($"Processing issue number: {issueNumber}");
+        var issueEvent = new IssueEvent
+        {
+            User = GITHUB_ACTOR,
+            Action = action,
+            Assignee = assignee,
+            Label = label
+        };
+
+        Console.WriteLine($"Handling Issue Event");
+        Console.WriteLine($"  Issue number: {issueNumber}");
+        Console.WriteLine($"  User:         {issueEvent.User}");
+        Console.WriteLine($"  Action:       {issueEvent.Action}");
+        Console.WriteLine($"  Assignee:     {issueEvent.Assignee}");
+        Console.WriteLine($"  Label:        {issueEvent.Label}");
 
         var appInfo = new ProductHeaderValue("AreaPod.IssueTriage");
         var connection = new Connection(appInfo, GITHUB_TOKEN);
@@ -59,10 +75,10 @@ internal class Program
                     .ToList(),
                 Author = issue.Author.Select(author => author.Login).Single()!,
                 AuthorAssociation = issue.AuthorAssociation,
-                ProjectColumns = issue
+                ProjectCards_v1 = issue
                     .ProjectCards(null, null, null, null, null)
                     .AllPages()
-                    .Select(card => new ProjectCardClassic
+                    .Select(card => new ProjectCard_v1
                     {
                         Id = card.Id,
                         ProjectName = card.Project.Name,
@@ -89,32 +105,58 @@ internal class Program
         Console.WriteLine($"  Labels: {string.Join(", ", issue.Labels)}");
         Console.WriteLine($"  Author: {issue.Author}");
         Console.WriteLine($"  Author Association: {issue.AuthorAssociation.ToString()}");
-        Console.WriteLine($"  Needs Triage: {(issue.NeedsTriage ? "Yes" : "No")}");
         
-        foreach (var pc in issue.ProjectColumns)
+        foreach (var pc in issue.ProjectCards_v1)
         {
             Console.WriteLine($"  On Project '{pc.ProjectName}' ({pc.ProjectNumber}) in Column '{pc.ColumnName}'{(pc.IsArchived ? " [Archive]" : "")}");
         }
 
-        if (issue.ProjectColumns.Any())
+        bool addNeedsTriageLabel = IssueTriageRules.ShouldAddNeedsTriageLabel(issueEvent, issue);
+        bool removeNeedsTriageLabel = !addNeedsTriageLabel && IssueTriageRules.ShouldRemoveTriageNeededLabel(issueEvent, issue);
+
+        if (addNeedsTriageLabel || removeNeedsTriageLabel)
         {
-            var card = issue.ProjectColumns.First();
-            var archive = new UpdateProjectCardInput { ProjectCardId = card.Id, IsArchived = !card.IsArchived };
-            var mutation = new Mutation()
-                .UpdateProjectCard(Var("card"))
-                .Select(result => new
-                {
-                    result.ProjectCard.IsArchived
-                })
+            var needsTriageLabelQuery = new Query()
+                .Repository("action-playground", "jeffhandley", true)
+                .Label("untriaged")
+                .Select(label => label.Id)
                 .Compile();
 
-            var mutationValues = new Dictionary<string, object>
-            {
-                { "card", archive }
-            };
+            ID needsTriageLabelId = await connection.Run(needsTriageLabelQuery);
 
-            var result = await connection.Run(mutation, mutationValues);
-            Console.WriteLine($"    Card State Updated: {(result.IsArchived ? "Archived" : "Unarchived")}");
+            if (string.IsNullOrEmpty(needsTriageLabelId.Value))
+            {
+                Console.WriteLine($"  Label '{IssueTriageRules.NeedsTriageLabel}' could not be found. Aborting.");
+            }
+            else
+            {
+                if (addNeedsTriageLabel)
+                {
+                    var needsTriage = new Mutation()
+                        .AddLabelsToLabelable(new AddLabelsToLabelableInput { LabelableId = issue.Id, LabelIds = new[] { needsTriageLabelId } })
+                        .Select(result => result.ClientMutationId)
+                        .Compile();
+
+                    await connection.Run(needsTriage);
+
+                    Console.WriteLine($"  Issue triage is needed. {IssueTriageRules.NeedsTriageLabel} was added.");
+                }
+                else
+                {
+                    var triageCompleted = new Mutation()
+                        .RemoveLabelsFromLabelable(new RemoveLabelsFromLabelableInput { LabelableId = issue.Id, LabelIds = new[] { needsTriageLabelId } })
+                        .Select(result => result.ClientMutationId)
+                        .Compile();
+
+                    await connection.Run(triageCompleted);
+
+                    Console.WriteLine($"  Issue triage completed. {IssueTriageRules.NeedsTriageLabel} was removed.");
+                }
+            }
+        }
+        else
+        {
+            Console.WriteLine("  Issue triage unaffected.");
         }
     }
 }

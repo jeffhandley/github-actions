@@ -4,7 +4,7 @@ using Octokit.GraphQL;
 
 namespace AreaPod.IssueTriage.Models;
 
-internal class ProjectCardClassic
+internal class ProjectCard_v1
 {
     public ID Id { get; set; }
     public int ProjectNumber { get; init; }
