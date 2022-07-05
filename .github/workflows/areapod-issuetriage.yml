@@ -12,6 +12,27 @@ on:
         description: Issue number
         required: true
         type: number
+      action:
+        description: The event action to simulate
+        required: true
+        type: choice
+        options:
+        - opened
+        - closed
+        - transferred
+        - reopened
+        - assigned
+        - unassigned
+        - labeled
+        - unlabeled
+        - milestoned
+        - demilestoned
+      assignee:
+        description: The assignee (assigned or unassigned)
+        required: false
+      label:
+        description: The label (labeled or unlabeled)
+        required: false
 
 jobs:
   areapod-issuetriage:
@@ -22,3 +43,6 @@ jobs:
         uses: jeffhandley/action-playground/actions/AreaPod/AreaPod.IssueTriage@main
         with:
           issue: ${{ github.event.inputs.issue }}
+          action: ${{ github.event.inputs.action }}
+          assignee: ${{ github.event.inputs.assignee }}
+          label: ${{ github.event.inputs.label }}
