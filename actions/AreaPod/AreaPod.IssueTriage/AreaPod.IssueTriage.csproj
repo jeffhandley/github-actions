@@ -8,8 +8,8 @@
 
   <PropertyGroup Label="Publish Optimizations" Condition="'$(RuntimeIdentifier)' != ''">
     <AssemblyName>areapod-issuetriage</AssemblyName>
-    <PublishAOT>false</PublishAOT>
-    <PublishTrimmed>false</PublishTrimmed>
+    <PublishAOT>true</PublishAOT>
+    <PublishTrimmed>true</PublishTrimmed>
     <DebugMode>none</DebugMode>
     <InvariantGlobalization>true</InvariantGlobalization>
     <IlcOptimizationPreference>Speed</IlcOptimizationPreference>
