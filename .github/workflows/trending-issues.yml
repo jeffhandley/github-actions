@@ -6,7 +6,7 @@ name: Find and label trending issues
 
 on:
   schedule:
-  - cron: '37,43,49 * * * *'
+  - cron: '0,5,10,15,20,25,30,35,40,45,50,55 * * * *'
   
   workflow_dispatch:
     inputs:
@@ -30,20 +30,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Set parameter values
-      id: params
-      run: |
-        INPUT_REACTIONS=${{ github.event.inputs.reactions }}
-        INPUT_DAYS=${{ github.event.inputs.days }}
-        INPUT_LABEL=${{ github.event.inputs.label }}
-        
-        echo "::set-output name=reactions::${INPUT_REACTIONS:-5}"
-        echo "::set-output name=days::${INPUT_DAYS:-7}"
-        echo "::set-output name=label::${INPUT_LABEL:-"trending"}"
-        
     - name: Find and label trending issues
       run: |
         echo "Finding trending issues..."
-        echo "  Reactions: ${{ steps.params.outputs.reactions }}"
-        echo "  Days:      ${{ steps.params.outputs.days }}"
-        echo "  Label:     '${{ steps.params.outputs.label }}'"
+        echo "  Reactions: ${{ inputs.reactions || 5 }}"
+        echo "  Days:      ${{ inputs.days || 7 }}"
+        echo "  Label:     '${{ inputs.label || 'trending' }}'"
