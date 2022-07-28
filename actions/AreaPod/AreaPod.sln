@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32204.284
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AreaPod.IssueTriage", "AreaPod.IssueTriage\AreaPod.IssueTriage.csproj", "{A7F07908-8CBF-47AC-A96C-50F0B93FC760}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AreaPod.IssueTriage", "AreaPod.IssueTriage\AreaPod.IssueTriage.csproj", "{A7F07908-8CBF-47AC-A96C-50F0B93FC760}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{45B58739-91D4-402A-8D36-79355A1FE9D6}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\.github\workflows\areapod-issuetriage.yml = ..\..\.github\workflows\areapod-issuetriage.yml
+		..\..\.github\workflows\publish-areapod-issuetriage.yml = ..\..\.github\workflows\publish-areapod-issuetriage.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
