@@ -19,17 +19,7 @@ on:
         description: The event action to simulate
         required: true
         type: choice
-        options:
-        - opened
-        - closed
-        - transferred
-        - reopened
-        - assigned
-        - unassigned
-        - labeled
-        - unlabeled
-        - milestoned
-        - demilestoned
+        options: [opened, closed, transferred, reopened, assigned, unassigned, labeled, unlabeled, milestoned, demilestoned]
       assignee:
         description: The assignee (assigned or unassigned)
         required: false
