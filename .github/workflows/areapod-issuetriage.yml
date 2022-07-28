@@ -7,7 +7,7 @@ permissions:
 
 on:
   issues:
-    types: [opened  ||closed  ||transferred  ||reopened  ||assigned  ||unassigned  ||labeled  ||unlabeled  ||milestoned  ||demilestoned]
+    types: [opened, closed, transferred, reopened, assigned, unassigned, labeled, unlabeled, milestoned, demilestoned]
 
   workflow_dispatch:
     inputs:
