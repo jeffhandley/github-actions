@@ -6,7 +6,7 @@ name: Find and label trending issues
 
 on:
   schedule:
-  - cron: '15 0 * * *'
+  - cron: '37,43,49 * * * *'
   
   workflow_dispatch:
     inputs:
