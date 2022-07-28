@@ -46,4 +46,4 @@ jobs:
         echo "Finding trending issues..."
         echo "  Reactions: ${{ steps.params.outputs.reactions }}"
         echo "  Days:      ${{ steps.params.outputs.days }}"
-        echo "  Label:     '${{ steps.params.outputs.label }}"
+        echo "  Label:     '${{ steps.params.outputs.label }}'"
