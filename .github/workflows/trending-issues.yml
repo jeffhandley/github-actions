@@ -1,0 +1,49 @@
+# This workflow looks for trending issues and applies a label to them
+# Issues are considered trending if they receive a significant number
+# of positive reactions within a period of time
+
+name: Find and label trending issues
+
+on:
+  schedule:
+  - cron: '15 0 * * *'
+  
+  workflow_dispatch:
+    inputs:
+      reactions:
+        description: The minimum number of positive reactions (from unique users)
+        required: true
+        type: number
+        default: '5'
+      days:
+        description: The maximum number of days within which the reactions need to occur
+        required: true
+        type: number
+        default: '7'
+      label:
+        description: The label to apply for trending issues
+        required: true
+        default: 'trending'
+
+jobs:
+  trending-issues:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Set parameter values
+      id: params
+      run: |
+        INPUT_REACTIONS=${{ github.event.inputs.reactions }}
+        INPUT_DAYS=${{ github.event.inputs.days }}
+        INPUT_LABEL=${{ github.event.inputs.label }}
+        
+        echo "::set-output name=reactions::${INPUT_REACTIONS:-5}"
+        echo "::set-output name=days::${INPUT_DAYS:-7}"
+        echo "::set-output name=label::${INPUT_LABEL:-"trending"}"
+        
+    - name: Find and label trending issues
+      run: |
+        echo "Finding trending issues..."
+        echo "  Reactions: ${{ steps.params.outputs.reactions }}"
+        echo "  Days:      ${{ steps.params.outputs.days }}"
+        echo "  Label:     '${{ steps.params.outputs.label }}"
