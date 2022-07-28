@@ -15,7 +15,11 @@
     <IlcOptimizationPreference>Speed</IlcOptimizationPreference>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Label="Runtime Directives (for AOT)" Condition="'$(RuntimeIdentifier)' != ''">
+    <RdXmlFile Include="rd.xml" />
+  </ItemGroup>
+
+  <ItemGroup Label="Exclude the artifacts folder from the project">
     <Compile Remove="artifacts\**" />
     <EmbeddedResource Remove="artifacts\**" />
     <None Remove="artifacts\**" />
