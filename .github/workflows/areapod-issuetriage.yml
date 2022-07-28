@@ -45,7 +45,7 @@ jobs:
       - name: Area Pod Issue Triage
         uses: jeffhandley/action-playground/actions/AreaPod/AreaPod.IssueTriage@main
         with:
-          issue:    ${{ inputs.issue    || github.event.issue.number }}
-          action:   ${{ inputs.action   || github.event.action       }}
-          assignee: ${{ inputs.assignee || github.event.assignee     || '' }}
-          label:    ${{ inputs.label    || github.event.label        || '' }}
+          issue:    ${{ format('{0}{1}', inputs.issue,    github.event.issue.number ) }}
+          action:   ${{ format('{0}{1}', inputs.action,   github.event.action       ) }}
+          assignee: ${{ format('{0}{1}', inputs.assignee, github.event.assignee     ) }}
+          label:    ${{ foramt('{0}{1}', inputs.label,    github.event.label        ) }}
