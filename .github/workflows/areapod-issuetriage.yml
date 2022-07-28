@@ -47,5 +47,5 @@ jobs:
         with:
           issue:    ${{ inputs.issue    || github.event.issue.number }}
           action:   ${{ inputs.action   || github.event.action       }}
-          assignee: ${{ inputs.assignee || github.event.assignee     }}
-          label:    ${{ inputs.label    || github.event.label        }}
+          assignee: ${{ inputs.assignee || github.event.assignee     || '' }}
+          label:    ${{ inputs.label    || github.event.label        || '' }}
