@@ -1,0 +1,31 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\jeffhand\\git\\jeffhandley\\action-playground\\.github\\workflows\\Workflows.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\jeffhand\\git\\jeffhandley\\action-playground\\.github\\workflows\\Workflows.csproj": {
+      "restore": {
+        "projectUniqueName": "C:\\Users\\jeffhand\\git\\jeffhandley\\action-playground\\.github\\workflows\\Workflows.csproj",
+        "projectPath": "C:\\Users\\jeffhand\\git\\jeffhandley\\action-playground\\.github\\workflows\\Workflows.csproj",
+        "packagesPath": "C:\\Users\\jeffhand\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\jeffhand\\git\\jeffhandley\\action-playground\\.github\\workflows\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\jeffhand\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Users\\jeffhand\\git\\dotnet\\runtime\\artifacts\\packages\\Debug\\Shipping": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://dnceng.pkgs.visualstudio.com/public/_packaging/dotnet6/nuget/v3/index.json": {}
+        }
+      }
+    }
+  }
+}
