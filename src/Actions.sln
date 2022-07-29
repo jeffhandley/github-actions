@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32204.284
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AreaPods", "AreaPods.csproj", "{A7F07908-8CBF-47AC-A96C-50F0B93FC760}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AreaPods", "AreaPods\AreaPods.csproj", "{A7F07908-8CBF-47AC-A96C-50F0B93FC760}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backlog", "D:\git\jeffhandley\github-actions\src\Backlog\Backlog.csproj", "{48AAC0D5-F2D5-4D4B-A077-6667B550794B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{A7F07908-8CBF-47AC-A96C-50F0B93FC760}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7F07908-8CBF-47AC-A96C-50F0B93FC760}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7F07908-8CBF-47AC-A96C-50F0B93FC760}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48AAC0D5-F2D5-4D4B-A077-6667B550794B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48AAC0D5-F2D5-4D4B-A077-6667B550794B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48AAC0D5-F2D5-4D4B-A077-6667B550794B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48AAC0D5-F2D5-4D4B-A077-6667B550794B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Octokit.GraphQL;
 using Octokit.GraphQL.Model;
 using static Octokit.GraphQL.Variable;
-using Env = System.Environment;
+using static System.Environment;
 using AreaPods.Models;
 using AreaPods.Rules;
 
@@ -14,32 +14,31 @@ namespace AreaPods;
 
 internal class Program
 {
-    static string GITHUB_ACTOR => Env.GetEnvironmentVariable("GITHUB_ACTOR")!;
-    static string GITHUB_TOKEN => Env.GetEnvironmentVariable("GITHUB_TOKEN")!;
+    static string GITHUB_ACTOR => GetEnvironmentVariable("GITHUB_ACTOR")!;
+    static string GITHUB_TOKEN => GetEnvironmentVariable("GITHUB_TOKEN")!;
+    static string GITHUB_REPOSITORY => GetEnvironmentVariable("GITHUB_REPOSITORY")!;
 
     static async Task<int> Main(string[] args)
     {
-        if (string.IsNullOrWhiteSpace(GITHUB_ACTOR) || string.IsNullOrWhiteSpace(GITHUB_TOKEN))
+        if (string.IsNullOrWhiteSpace(GITHUB_ACTOR) || string.IsNullOrWhiteSpace(GITHUB_TOKEN) || string.IsNullOrWhiteSpace(GITHUB_REPOSITORY))
         {
-            throw new ArgumentException("Missing environment variable. GITHUB_ACTOR and GITHUB_TOKEN are required");
+            throw new ArgumentException("Missing environment variable. GITHUB_ACTOR, GITHUB_TOKEN, and GITHUB_REPOSITORY are required.");
         }
 
-        var ownerArg = new Option<string>(new[] { "--owner", "-o" }, "The repository owner") { IsRequired = true };
-        var repoArg = new Option<string>(new[] { "--repo", "-r" }, "The repository name") { IsRequired = true };
-        var issueArg = new Option<uint>(new[] { "--issue", "-i" }, "The issue number to process") { IsRequired = true };
-        var actionArg = new Option<IssueAction?>(new[] { "--action", "-a" }, "The issue action");
+        var issueArg = new Option<uint>("--issue", "The issue number to process") { IsRequired = true };
+        var actionArg = new Option<IssueAction?>("--action", "The issue action");
         var assigneeArg = new Option<string?>("--assignee", "The assignee added or removed");
         var labelArg = new Option<string?>("--label", "The label added or removed");
 
-        var triageCommand = new Command("issue-triage", "Issue Triage") { ownerArg, repoArg, issueArg, actionArg, assigneeArg, labelArg };
-        triageCommand.SetHandler(HandleIssueTriage, ownerArg, repoArg, issueArg, actionArg, assigneeArg, labelArg);
+        var issueTriageCommand = new Command("issue-triage", "Issue Triage") { issueArg, actionArg, assigneeArg, labelArg };
+        issueTriageCommand.SetHandler(HandleIssueTriage, issueArg, actionArg, assigneeArg, labelArg);
 
-        var rootCommand = new RootCommand("Area Pod commands") { triageCommand };
+        var rootCommand = new RootCommand("Area Pod commands") { issueTriageCommand };
 
         return await rootCommand.InvokeAsync(args);
     }
 
-    static async Task HandleIssueTriage(string owner, string repo, uint issueNumber, IssueAction? action, string? assignee, string? label)
+    static async Task HandleIssueTriage(uint issueNumber, IssueAction? action, string? assignee, string? label)
     {
         var issueEvent = new IssueEvent
         {
@@ -49,12 +48,16 @@ internal class Program
             Label = label
         };
 
+        string[] ownerRepo = GITHUB_REPOSITORY.Split('/');
+        string owner = ownerRepo[0];
+        string repo = ownerRepo[1];
+
         Console.WriteLine($"Handling Issue Event");
-        Console.WriteLine($"  Issue:        {owner}/{repo}#{issueNumber}");
-        Console.WriteLine($"  User:         {issueEvent.User}");
-        Console.WriteLine($"  Action:       {issueEvent.Action}");
-        Console.WriteLine($"  Assignee:     {issueEvent.Assignee}");
-        Console.WriteLine($"  Label:        {issueEvent.Label}");
+        Console.WriteLine($"  Issue:    {owner}/{repo}#{issueNumber}");
+        Console.WriteLine($"  User:     {issueEvent.User}");
+        Console.WriteLine($"  Action:   {issueEvent.Action}");
+        Console.WriteLine($"  Assignee: {issueEvent.Assignee}");
+        Console.WriteLine($"  Label:    {issueEvent.Label}");
 
         var appInfo = new ProductHeaderValue("AreaPods");
         var connection = new Connection(appInfo, GITHUB_TOKEN);

@@ -1,0 +1,34 @@
+name: Backlog Trending Issues
+description: A GitHub action for identifying trending issues in the backlog
+
+inputs:
+  reactions:
+    description: The minimum number of positive reactions (from unique users)
+    required: true
+    type: number
+  days:
+    description: The maximum number of days within which the reactions need to occur
+    required: true
+    type: number
+  label:
+    description: The label to apply for trending issues
+    required: true
+    type: string
+
+env:
+  GITHUB_TOKEN:      ${{ github.token }}
+  GITHUB_REPOSITORY: ${{ github.repository }}
+
+runs:
+  using: docker
+  image: docker://ghcr.io/jeffhandley/github-actions/backlog:main
+  args: [
+    "trending-issues",
+    "--issue",    "${{ inputs.issue    }}",
+    "--action",   "${{ inputs.action   }}",
+    "--assignee", "${{ inputs.assignee }}",
+    "--label",    "${{ inputs.label    }}",
+  ]
+  env:
+    GITHUB_TOKEN:      ${{ env.GITHUB_TOKEN }}
+    GITHUB_REPOSITORY: ${{ env.GITHUB_REPOSITORY }}

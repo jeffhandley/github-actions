@@ -2,18 +2,6 @@ name: Area Pod Issue Triage
 description: A GitHub action for handling Area Pod Issue Triage events
 
 inputs:
-  GITHUB_TOKEN:
-    description: The GITHUB_TOKEN secret to use for connecting to GitHub APIs
-    required: true
-    default: ${{ github.token }}
-  owner:
-    description: The repository owner
-    required: true
-    type: string
-  repo:
-    description: The repository name
-    required: true
-    type: string
   issue:
     description: The issue number to triage
     required: true
@@ -21,26 +9,32 @@ inputs:
   action:
     description: The event action performed
     required: true
-    type: choice
-    options: [opened, closed, transferred, reopened, assigned, unassigned, labeled, unlabeled, milestoned, demilestoned]
+    type: string
   assignee:
     description: The assignee (assigned or unassigned)
     required: false
+    type: string
   label:
     description: The label (labeled or unlabeled)
     required: false
+    type: string
+
+env:
+  GITHUB_ACTOR:      ${{ github.actor }}
+  GITHUB_TOKEN:      ${{ github.token }}
+  GITHUB_REPOSITORY: ${{ github.repository }}
 
 runs:
   using: docker
   image: docker://ghcr.io/jeffhandley/github-actions/areapods:main
   args: [
     "issue-triage",
-    "--owner",    "${{ inputs.owner    }}",
-    "--repo",     "${{ inputs.repo     }}",
     "--issue",    "${{ inputs.issue    }}",
     "--action",   "${{ inputs.action   }}",
     "--assignee", "${{ inputs.assignee }}",
     "--label",    "${{ inputs.label    }}",
   ]
   env:
-    GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+    GITHUB_ACTOR:      ${{ env.GITHUB_ACTOR }}
+    GITHUB_TOKEN:      ${{ env.GITHUB_TOKEN }}
+    GITHUB_REPOSITORY: ${{ env.GITHUB_REPOSITORY }}

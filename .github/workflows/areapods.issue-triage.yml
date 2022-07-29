@@ -56,8 +56,6 @@ jobs:
       - name: Area Pod Issue Triage
         uses: jeffhandley/github-actions/actions/areapods/issue-triage@main
         with:
-          owner:    ${{ github.event.repository.owner.login            }}
-          repo:     ${{ github.event.repository.name                   }}
           issue:    ${{ inputs.issue    || github.event.issue.number   }}
           action:   ${{ inputs.action   || github.event.action         }}
           assignee: ${{ inputs.assignee || github.event.assignee.login }}

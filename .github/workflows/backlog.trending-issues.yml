@@ -43,9 +43,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Find and label trending issues
-      run: |
-        echo "Finding trending issues..."
-        echo "  Reactions: ${{ inputs.reactions || 5          }}"
-        echo "  Days:      ${{ inputs.days      || 7          }}"
-        echo "  Label:     ${{ inputs.label     || 'trending' }}"
+      - name: Find and Label Trending Issues
+        uses: jeffhandley/github-actions/actions/backlog/trending-issues@main
+        with:
+          reactions: ${{ fromJson(inputs.reactions           || 5)         }}
+          days:      ${{ fromJson(inputs.days                || 7)         }}
+          label:     ${{ inputs.label                        || 'trending' }}

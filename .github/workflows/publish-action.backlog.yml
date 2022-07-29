@@ -1,4 +1,4 @@
-name: Publish 'backlog' action Docker image
+name: Publish 'areapods' action Docker image
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: jeffhandley/github-actions/backlog
+  IMAGE_NAME: jeffhandley/github-actions/areapods
   IMAGE_TAG: ${{ github.ref_name }}
 
 jobs:
@@ -39,6 +39,6 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
-          context: ./src/Backlog
+          context: ./src/AreaPods
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
