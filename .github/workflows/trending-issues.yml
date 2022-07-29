@@ -26,12 +26,12 @@ on:
         description: The minimum number of positive reactions (from unique users)
         required: true
         type: number
-        default: '5'
+        default: 5
       days:
         description: The maximum number of days within which the reactions need to occur
         required: true
         type: number
-        default: '7'
+        default: 7
       label:
         description: The label to apply for trending issues
         required: true
