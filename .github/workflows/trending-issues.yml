@@ -7,6 +7,18 @@ name: Find and label trending issues
 on:
   schedule:
   - cron: '* * * * *'
+
+  workflow_call:
+    inputs:
+      reactions:
+        required: true
+        type: number
+      days:
+        required: true
+        type: number
+      label:
+        required: true
+        type: string
   
   workflow_dispatch:
     inputs:
@@ -23,6 +35,7 @@ on:
       label:
         description: The label to apply for trending issues
         required: true
+        type: string
         default: 'trending'
 
 jobs:
