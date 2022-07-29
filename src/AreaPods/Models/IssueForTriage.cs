@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Octokit.GraphQL;
 using Octokit.GraphQL.Model;
 
-namespace AreaPod.IssueTriage.Models;
+namespace AreaPods.Models;
 
 internal class IssueForTriage
 {

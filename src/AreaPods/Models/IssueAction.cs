@@ -1,4 +1,4 @@
-﻿namespace AreaPod.IssueTriage.Models;
+﻿namespace AreaPods.Models;
 
 internal enum IssueAction
 {

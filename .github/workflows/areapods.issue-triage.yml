@@ -54,7 +54,7 @@ jobs:
 
     steps:
       - name: Area Pod Issue Triage
-        uses: jeffhandley/github-actions/actions/AreaPod/AreaPod.IssueTriage@main
+        uses: jeffhandley/github-actions/actions/areapods/issue-triage@main
         with:
           owner:    ${{ github.event.repository.owner.login            }}
           repo:     ${{ github.event.repository.name                   }}

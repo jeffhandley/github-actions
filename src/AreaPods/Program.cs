@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.CommandLine;
+using System.Linq;
 using System.Threading.Tasks;
 using Octokit.GraphQL;
 using Octokit.GraphQL.Model;
 using static Octokit.GraphQL.Variable;
 using Env = System.Environment;
-using AreaPod.IssueTriage.Models;
-using System.Linq;
-using AreaPod.IssueTriage.Rules;
+using AreaPods.Models;
+using AreaPods.Rules;
 
-namespace AreaPod.IssueTriage;
+namespace AreaPods;
 
 internal class Program
 {
@@ -19,9 +19,6 @@ internal class Program
 
     static async Task<int> Main(string[] args)
     {
-        string? GITHUB_ACTOR = Env.GetEnvironmentVariable("GITHUB_ACTOR");
-        string? GITHUB_TOKEN = Env.GetEnvironmentVariable("GITHUB_TOKEN");
-
         if (string.IsNullOrWhiteSpace(GITHUB_ACTOR) || string.IsNullOrWhiteSpace(GITHUB_TOKEN))
         {
             throw new ArgumentException("Missing environment variable. GITHUB_ACTOR and GITHUB_TOKEN are required");
@@ -34,10 +31,12 @@ internal class Program
         var assigneeArg = new Option<string?>("--assignee", "The assignee added or removed");
         var labelArg = new Option<string?>("--label", "The label added or removed");
 
-        var triageCommand = new RootCommand("Area Pod issue triage") { ownerArg, repoArg, issueArg, actionArg, assigneeArg, labelArg };
+        var triageCommand = new Command("issue-triage", "Issue Triage") { ownerArg, repoArg, issueArg, actionArg, assigneeArg, labelArg };
         triageCommand.SetHandler(HandleIssueTriage, ownerArg, repoArg, issueArg, actionArg, assigneeArg, labelArg);
 
-        return await triageCommand.InvokeAsync(args);
+        var rootCommand = new RootCommand("Area Pod commands") { triageCommand };
+
+        return await rootCommand.InvokeAsync(args);
     }
 
     static async Task HandleIssueTriage(string owner, string repo, uint issueNumber, IssueAction? action, string? assignee, string? label)

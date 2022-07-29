@@ -1,7 +1,7 @@
-using AreaPod.IssueTriage.Models;
 using System.Collections.Generic;
+using AreaPods.Models;
 
-namespace AreaPod.IssueTriage.Rules;
+namespace AreaPods.Rules;
 
 internal static class IssueTriageRules
 {

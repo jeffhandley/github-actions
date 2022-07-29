@@ -1,5 +1,5 @@
-name: .NET Org Area Pod Issue Triage
-description: A GitHub action that drives the .NET org's area pod issue triage process
+name: Area Pod Issue Triage
+description: A GitHub action for handling Area Pod Issue Triage events
 
 inputs:
   GITHUB_TOKEN:
@@ -32,8 +32,9 @@ inputs:
 
 runs:
   using: docker
-  image: docker://ghcr.io/jeffhandley/github-actions/areapod-issuetriage:main
+  image: docker://ghcr.io/jeffhandley/github-actions/areapods:main
   args: [
+    "issue-triage",
     "--owner",    "${{ inputs.owner    }}",
     "--repo",     "${{ inputs.repo     }}",
     "--issue",    "${{ inputs.issue    }}",

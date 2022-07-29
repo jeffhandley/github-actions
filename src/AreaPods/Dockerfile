@@ -18,4 +18,4 @@ FROM mcr.microsoft.com/dotnet/runtime-deps:7.0
 COPY --from=actions-build /actions-build/artifacts /actions
 
 ENV PATH=$PATH:/actions
-ENTRYPOINT [ "/actions/areapod-issuetriage" ]
+ENTRYPOINT [ "/actions/areapods" ]

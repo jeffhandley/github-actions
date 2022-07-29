@@ -1,5 +1,6 @@
 ﻿#nullable disable warnings
-namespace AreaPod.IssueTriage.Models;
+
+namespace AreaPods.Models;
 
 internal class IssueEvent
 {

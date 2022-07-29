@@ -2,7 +2,7 @@
 
 using Octokit.GraphQL;
 
-namespace AreaPod.IssueTriage.Models;
+namespace AreaPods.Models;
 
 internal class ProjectCard_v1
 {
