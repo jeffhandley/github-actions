@@ -2,6 +2,8 @@ name: Backlog Trending Issues
 description: A GitHub action for identifying trending issues in the backlog
 
 inputs:
+  GITHUB_TOKEN:
+    default: ${{ github.token }}
   reactions:
     description: The minimum number of positive reactions (from unique users)
     required: true
@@ -15,9 +17,6 @@ inputs:
     required: true
     type: string
 
-env:
-  GITHUB_TOKEN: ${{ github.token }}
-
 runs:
   using: docker
   image: docker://ghcr.io/jeffhandley/github-actions/backlog:main
@@ -29,4 +28,4 @@ runs:
     "--label",    "${{ inputs.label    }}",
   ]
   env:
-    GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
+    GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
