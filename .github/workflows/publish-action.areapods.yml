@@ -13,7 +13,7 @@ env:
   IMAGE_TAG: ${{ github.ref_name }}
 
 jobs:
-  docker-build-push:
+  areapods:
     runs-on: ubuntu-latest
 
     permissions:

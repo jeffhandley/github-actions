@@ -20,6 +20,12 @@ internal static class IssueTriageRules
 
     static bool WasTriageNeededEvent(IssueEvent issueEvent) =>
         issueEvent.Action == IssueAction.Opened ||
+        issueEvent.Action == IssueAction.Reopened ||
+        issueEvent.Action == IssueAction.Demilestoned ||
+        (
+            issueEvent.Action == IssueAction.Unlabeled &&
+            TriageCompletedLabels.Contains(issueEvent.Label)
+        ) ||
         issueEvent.Action == IssueAction.Transferred;
 
     static bool WasTriageCompletedEvent(IssueEvent issueEvent) =>
@@ -29,14 +35,6 @@ internal static class IssueTriageRules
             issueEvent.Action == IssueAction.Labeled &&
             TriageCompletedLabels.Contains(issueEvent.Label)
         );
-
-    //static bool WasFurtherTriageNeededEvent(IssueEvent issueEvent) =>
-    //    issueEvent.Action == IssueAction.Reopened ||
-    //    issueEvent.Action == IssueAction.Demilestoned ||
-    //    (
-    //        issueEvent.Action == IssueAction.Unlabeled &&
-    //        TriageCompletedLabels.Contains(issueEvent.Label)
-    //    );
 
     static bool HasNeedsTriageLabel(IssueForTriage issue) =>
         issue.Labels.Contains(NeedsTriageLabel);

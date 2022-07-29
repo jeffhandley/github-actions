@@ -49,7 +49,7 @@ on:
         type: string
 
 jobs:
-  areapod-issuetriage:
+  issue-triage:
     runs-on: ubuntu-latest
 
     steps:

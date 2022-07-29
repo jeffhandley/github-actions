@@ -56,7 +56,7 @@ internal class Program
         Console.WriteLine($"  Assignee:     {issueEvent.Assignee}");
         Console.WriteLine($"  Label:        {issueEvent.Label}");
 
-        var appInfo = new ProductHeaderValue("AreaPod.IssueTriage");
+        var appInfo = new ProductHeaderValue("AreaPods");
         var connection = new Connection(appInfo, GITHUB_TOKEN);
 
         var query = new Query()
