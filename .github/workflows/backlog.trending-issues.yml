@@ -2,7 +2,7 @@
 # Issues are considered trending if they receive a significant number
 # of positive reactions within a period of time
 
-name: Find and label trending issues in the backlog
+name: "Backlog: Trending Issues"
 
 on:
   schedule:

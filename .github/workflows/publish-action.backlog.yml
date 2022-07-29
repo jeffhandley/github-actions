@@ -1,4 +1,4 @@
-name: Publish 'areapods' action Docker image
+name: "Publish: backlog"
 
 on:
   push:
