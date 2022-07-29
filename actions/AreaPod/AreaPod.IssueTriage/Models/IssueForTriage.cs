@@ -10,6 +10,7 @@ internal class IssueForTriage
 {
     public ID Id { get; set; }
     public int Number { get; init; }
+    public string Title { get; init; }
     public bool Closed { get; init; }
     public string? Milestone { get; init; }
 

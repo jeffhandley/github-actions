@@ -6,6 +6,14 @@ inputs:
     description: The GITHUB_TOKEN secret to use for connecting to GitHub APIs
     required: true
     default: ${{ github.token }}
+  owner:
+    description: The repository owner
+    required: true
+    type: string
+  repo:
+    description: The repository name
+    required: true
+    type: string
   issue:
     description: The issue number to triage
     required: true
@@ -14,17 +22,7 @@ inputs:
     description: The event action performed
     required: true
     type: choice
-    options:
-    - opened
-    - closed
-    - transferred
-    - reopened
-    - assigned
-    - unassigned
-    - labeled
-    - unlabeled
-    - milestoned
-    - demilestoned
+    options: [opened, closed, transferred, reopened, assigned, unassigned, labeled, unlabeled, milestoned, demilestoned]
   assignee:
     description: The assignee (assigned or unassigned)
     required: false
@@ -36,10 +34,12 @@ runs:
   using: docker
   image: docker://ghcr.io/jeffhandley/github-actions/areapod-issuetriage:main
   args: [
-    "--issue", "${{ inputs.issue }}",
-    "--action", "${{ inputs.action }}",
+    "--owner",    "${{ inputs.owner    }}",
+    "--repo",     "${{ inputs.repo     }}",
+    "--issue",    "${{ inputs.issue    }}",
+    "--action",   "${{ inputs.action   }}",
     "--assignee", "${{ inputs.assignee }}",
-    "--label", "${{ inputs.label }}",
+    "--label",    "${{ inputs.label    }}",
   ]
   env:
     GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}

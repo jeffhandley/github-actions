@@ -27,18 +27,20 @@ internal class Program
             throw new ArgumentException("Missing environment variable. GITHUB_ACTOR and GITHUB_TOKEN are required");
         }
 
+        var ownerArg = new Option<string>(new[] { "--owner", "-o" }, "The repository owner") { IsRequired = true };
+        var repoArg = new Option<string>(new[] { "--repo", "-r" }, "The repository name") { IsRequired = true };
         var issueArg = new Option<uint>(new[] { "--issue", "-i" }, "The issue number to process") { IsRequired = true };
         var actionArg = new Option<IssueAction?>(new[] { "--action", "-a" }, "The issue action");
         var assigneeArg = new Option<string?>("--assignee", "The assignee added or removed");
         var labelArg = new Option<string?>("--label", "The label added or removed");
 
-        var triageCommand = new RootCommand("Area Pod issue triage") { issueArg, actionArg, assigneeArg, labelArg };
-        triageCommand.SetHandler(HandleIssueTriage, issueArg, actionArg, assigneeArg, labelArg);
+        var triageCommand = new RootCommand("Area Pod issue triage") { ownerArg, repoArg, issueArg, actionArg, assigneeArg, labelArg };
+        triageCommand.SetHandler(HandleIssueTriage, ownerArg, repoArg, issueArg, actionArg, assigneeArg, labelArg);
 
         return await triageCommand.InvokeAsync(args);
     }
 
-    static async Task HandleIssueTriage(uint issueNumber, IssueAction? action, string? assignee, string? label)
+    static async Task HandleIssueTriage(string owner, string repo, uint issueNumber, IssueAction? action, string? assignee, string? label)
     {
         var issueEvent = new IssueEvent
         {
@@ -49,7 +51,7 @@ internal class Program
         };
 
         Console.WriteLine($"Handling Issue Event");
-        Console.WriteLine($"  Issue number: {issueNumber}");
+        Console.WriteLine($"  Issue:        {owner}/{repo}#{issueNumber}");
         Console.WriteLine($"  User:         {issueEvent.User}");
         Console.WriteLine($"  Action:       {issueEvent.Action}");
         Console.WriteLine($"  Assignee:     {issueEvent.Assignee}");
@@ -66,6 +68,7 @@ internal class Program
             {
                 Id = issue.Id,
                 Number = issue.Number,
+                Title = issue.Title,
                 Closed = issue.Closed,
                 Milestone = issue.Milestone.Select(milestone => milestone.Title).SingleOrDefault(),
                 Labels = issue
@@ -92,14 +95,15 @@ internal class Program
 
         var values = new Dictionary<string, object>
         {
-            { "owner", "jeffhandley" },
-            { "repo", "github-actions" },
+            { "owner", owner },
+            { "repo", repo },
             { "issue_number", issueNumber }
         };
 
         var issue = await connection.Run(query, values);
 
-        Console.WriteLine($"Issue {issue.Number} was {action?.ToString() ?? "processed"}");
+        Console.WriteLine($"Issue {owner}/{repo}#{issue.Number} was {action?.ToString() ?? "processed"}");
+        Console.WriteLine($"  Title: {issue.Title}");
         Console.WriteLine($"  State: {(issue.Closed ? "Closed" : "Open")}");
         Console.WriteLine($"  Milestone: {issue.Milestone ?? "<none>"}");
         Console.WriteLine($"  Labels: {string.Join(", ", issue.Labels)}");
@@ -117,8 +121,8 @@ internal class Program
         if (addNeedsTriageLabel || removeNeedsTriageLabel)
         {
             var needsTriageLabelQuery = new Query()
-                .Repository("github-actions", "jeffhandley", true)
-                .Label("untriaged")
+                .Repository(repo, owner, true)
+                .Label(IssueTriageRules.NeedsTriageLabel)
                 .Select(label => label.Id)
                 .Compile();
 
