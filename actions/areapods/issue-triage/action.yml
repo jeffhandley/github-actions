@@ -26,7 +26,6 @@ runs:
   image: docker://ghcr.io/jeffhandley/github-actions/areapods:main
   args: [
     "issue-triage",
-    "--repo",     "${{ inputs.repo     }}",
     "--issue",    "${{ inputs.issue    }}",
     "--action",   "${{ inputs.action   }}",
     "--assignee", "${{ inputs.assignee }}",

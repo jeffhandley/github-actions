@@ -22,10 +22,9 @@ runs:
   image: docker://ghcr.io/jeffhandley/github-actions/backlog:main
   args: [
     "trending-issues",
-    "--issue",    "${{ inputs.issue    }}",
-    "--action",   "${{ inputs.action   }}",
-    "--assignee", "${{ inputs.assignee }}",
-    "--label",    "${{ inputs.label    }}",
+    "--reactions", "${{ inputs.reactions }}",
+    "--days",      "${{ inputs.days      }}",
+    "--label",     "${{ inputs.label     }}",
   ]
   env:
     GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
