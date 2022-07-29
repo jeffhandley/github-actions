@@ -23,7 +23,7 @@ internal class Program
         }
 
         var reactionsArg = new Option<uint>("--reactions", "The minimum number of reactions for trending consideration") { IsRequired = true };
-        var daysArg = new Option<uint>("--action", "The maximum number of days for the reactions to occur withinn") { IsRequired = true };
+        var daysArg = new Option<uint>("--days", "The maximum number of days for the reactions to occur withinn") { IsRequired = true };
         var labelArg = new Option<string>("--label", "The label to add to trending issues") { IsRequired = true };
 
         var trendingIssuesCommand = new Command("trending-issues", "Trending Issues") { reactionsArg, daysArg, labelArg };
