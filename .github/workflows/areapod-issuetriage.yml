@@ -33,7 +33,7 @@ jobs:
 
     steps:
       - name: Area Pod Issue Triage
-        uses: jeffhandley/action-playground/actions/AreaPod/AreaPod.IssueTriage@main
+        uses: jeffhandley/github-actions/actions/AreaPod/AreaPod.IssueTriage@main
         with:
           issue:    ${{ inputs.issue    || github.event.issue.number   }}
           action:   ${{ inputs.action   || github.event.action         }}

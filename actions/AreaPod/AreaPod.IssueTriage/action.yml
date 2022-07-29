@@ -34,7 +34,7 @@ inputs:
 
 runs:
   using: docker
-  image: docker://ghcr.io/jeffhandley/action-playground/areapod-issuetriage:main
+  image: docker://ghcr.io/jeffhandley/github-actions/areapod-issuetriage:main
   args: [
     "--issue", "${{ inputs.issue }}",
     "--action", "${{ inputs.action }}",

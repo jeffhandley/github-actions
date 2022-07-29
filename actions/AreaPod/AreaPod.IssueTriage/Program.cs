@@ -93,7 +93,7 @@ internal class Program
         var values = new Dictionary<string, object>
         {
             { "owner", "jeffhandley" },
-            { "repo", "action-playground" },
+            { "repo", "github-actions" },
             { "issue_number", issueNumber }
         };
 
@@ -117,7 +117,7 @@ internal class Program
         if (addNeedsTriageLabel || removeNeedsTriageLabel)
         {
             var needsTriageLabelQuery = new Query()
-                .Repository("action-playground", "jeffhandley", true)
+                .Repository("github-actions", "jeffhandley", true)
                 .Label("untriaged")
                 .Select(label => label.Id)
                 .Compile();
