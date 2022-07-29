@@ -18,14 +18,15 @@ on:
       action:
         description: The event action to simulate
         required: true
-        type: choice
-        options: [opened, closed, transferred, reopened, assigned, unassigned, labeled, unlabeled, milestoned, demilestoned]
+        type: string
       assignee:
         description: The assignee (assigned or unassigned)
         required: false
+        type: string
       label:
         description: The label (labeled or unlabeled)
         required: false
+        type: string
 
   workflow_dispatch:
     inputs:
@@ -41,9 +42,11 @@ on:
       assignee:
         description: The assignee (assigned or unassigned)
         required: false
+        type: string
       label:
         description: The label (labeled or unlabeled)
         required: false
+        type: string
 
 jobs:
   areapod-issuetriage:
