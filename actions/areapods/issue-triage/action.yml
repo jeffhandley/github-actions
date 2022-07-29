@@ -19,15 +19,19 @@ inputs:
     required: false
     type: string
 
+env:
+  GITHUB_TOKEN: ${{ github.token }}
+
 runs:
   using: docker
   image: docker://ghcr.io/jeffhandley/github-actions/areapods:main
   args: [
     "issue-triage",
+    "--repo",     "${{ inputs.repo     }}",
     "--issue",    "${{ inputs.issue    }}",
     "--action",   "${{ inputs.action   }}",
     "--assignee", "${{ inputs.assignee }}",
     "--label",    "${{ inputs.label    }}",
   ]
   env:
-    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
