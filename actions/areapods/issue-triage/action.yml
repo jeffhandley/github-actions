@@ -29,3 +29,5 @@ runs:
     "--assignee", "${{ inputs.assignee }}",
     "--label",    "${{ inputs.label    }}",
   ]
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

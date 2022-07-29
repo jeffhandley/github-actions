@@ -15,10 +15,6 @@ inputs:
     required: true
     type: string
 
-env:
-  GITHUB_TOKEN:      ${{ github.token }}
-  GITHUB_REPOSITORY: ${{ github.repository }}
-
 runs:
   using: docker
   image: docker://ghcr.io/jeffhandley/github-actions/backlog:main
@@ -30,5 +26,4 @@ runs:
     "--label",    "${{ inputs.label    }}",
   ]
   env:
-    GITHUB_TOKEN:      ${{ env.GITHUB_TOKEN }}
-    GITHUB_REPOSITORY: ${{ env.GITHUB_REPOSITORY }}
+    GITHUB_TOKEN:      ${{ secrets.GITHUB_TOKEN }}
