@@ -44,5 +44,5 @@ jobs:
         uses: jeffhandley/github-actions/actions/issue-labeler/author-issues@main
         with:
           issue:   ${{ fromJson(inputs.issue || github.event.issue.number) }}
-          authors: ${{ inputs.days  || "jeffhandley eilon heng-liu"        }}
-          label:   ${{ inputs.label || "team-member"                       }}
+          authors: ${{ inputs.days  || 'jeffhandley eilon heng-liu'        }}
+          label:   ${{ inputs.label || 'team-member'                       }}
