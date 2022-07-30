@@ -1,4 +1,4 @@
-name: "Publish: areapods"
+name: "Publish an action"
 
 on:
   workflow_call:
