@@ -3,11 +3,11 @@ name: "Publish: areapods"
 on:
   push:
     branches: [ main ]
-    paths: [ 'src/AreaPods/**' ]
+    paths: [ 'src/AreaPods/**', 'src/Dockerfile' ]
 
   pull_request:
     branches: [ main ]
-    paths: [ 'src/AreaPods/**' ]
+    paths: [ 'src/AreaPods/**', 'src/Dockerfile' ]
 
   workflow_dispatch:
 

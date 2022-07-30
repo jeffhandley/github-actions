@@ -4,11 +4,9 @@ on:
   workflow_call:
     inputs:
       action_name:
-        description: The name of the action to build and publish
         required: true
         type: string
       action_folder:
-        description: The name of the action folder within the 'src' folder
         required: true
         type: string
 

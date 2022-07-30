@@ -3,11 +3,11 @@ name: "Publish: backlog"
 on:
   push:
     branches: [ main ]
-    paths: [ 'src/Backlog/**' ]
+    paths: [ 'src/Backlog/**', 'src/Dockerfile' ]
 
   pull_request:
     branches: [ main ]
-    paths: [ 'src/Backlog/**' ]
+    paths: [ 'src/Backlog/**', 'src/Dockerfile' ]
 
   workflow_dispatch:
 

@@ -3,11 +3,11 @@ name: "Publish: issue-labeler"
 on:
   push:
     branches: [ main ]
-    paths: [ 'src/IssueLabeler/**' ]
+    paths: [ 'src/IssueLabeler/**', 'src/Dockerfile' ]
 
   pull_request:
     branches: [ main ]
-    paths: [ 'src/IssueLabeler/**' ]
+    paths: [ 'src/IssueLabeler/**', 'src/Dockerfile' ]
 
   workflow_dispatch:
 
