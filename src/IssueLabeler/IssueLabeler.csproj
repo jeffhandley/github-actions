@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Publish Optimizations" Condition="'$(RuntimeIdentifier)' != ''">
-    <AssemblyName>areapods</AssemblyName>
+    <AssemblyName>issue-labeler</AssemblyName>
     <PublishAOT>false</PublishAOT>
     <PublishTrimmed>true</PublishTrimmed>
     <DebugMode>none</DebugMode>
