@@ -21,7 +21,7 @@ runs:
   using: docker
   image: docker://ghcr.io/jeffhandley/github-actions/issue-labeler:main
   args: [
-    "author-issues",
+    "authors",
     "--issue",   "${{ inputs.issue   }}",
     "--authors", "${{ inputs.authors }}",
     "--label",   "${{ inputs.label   }}",
