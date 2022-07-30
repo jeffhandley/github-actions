@@ -1,4 +1,4 @@
-name: "Publish: backlog"
+name: "Publish: issue-labeler"
 
 on:
   push:
