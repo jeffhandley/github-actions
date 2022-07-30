@@ -1,0 +1,48 @@
+# This workflow looks for trending issues and applies a label to them
+# Issues are considered trending if they receive a significant number
+# of positive reactions within a period of time
+
+name: "Issue Labeler: Author Issues"
+
+on:
+  issues:
+    types: [opened]
+
+  workflow_call:
+    inputs:
+      issue:
+        required: true
+        type: number
+      authors:
+        required: true
+        type: string
+      label:
+        required: true
+        type: string
+  
+  workflow_dispatch:
+    inputs:
+      issue:
+        description: The issue number to process
+        required: true
+        type: number
+      authors:
+        description: The authors whose issues get labeled
+        required: true
+        type: string
+      label:
+        description: The label to apply if the issue was authored by one of the specified users
+        required: true
+        type: string
+
+jobs:
+  issue-labeler:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: author-issues
+        uses: jeffhandley/github-actions/actions/issue-labeler/author-issues@main
+        with:
+          issue:   ${{ fromJson(inputs.issue || github.event.issue.number) }}
+          authors: ${{ inputs.days  || "jeffhandley eilon heng-liu"        }}
+          label:   ${{ inputs.label || "team-member"                       }}

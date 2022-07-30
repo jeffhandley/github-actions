@@ -1,0 +1,30 @@
+name: Label Author Issues
+description: Apply a label to issues authored by specified users
+
+inputs:
+  GITHUB_TOKEN:
+    default: ${{ github.token }}
+  issue:
+    description: The issue number to process
+    required: true
+    type: number
+  authors:
+    description: The authors whose issues get labeled
+    required: true
+    type: string
+  label:
+    description: The label to apply if the issue was authored by one of the specified users
+    required: true
+    type: string
+
+runs:
+  using: docker
+  image: docker://ghcr.io/jeffhandley/github-actions/issue-labeler:main
+  args: [
+    "author-issues",
+    "--issue",   "${{ inputs.issue   }}",
+    "--authors", "${{ inputs.authors }}",
+    "--label",   "${{ inputs.label   }}",
+  ]
+  env:
+    GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}

@@ -63,8 +63,7 @@ internal class Program
         var connection = new Connection(appInfo, GITHUB_TOKEN);
 
         var query = new Query()
-            .RepositoryOwner(Var("owner"))
-            .Repository(Var("repo"))
+            .Repository(Var("repo"), Var("owner"))
             .Issue(Var("issue_number"))
             .Select(issue => new IssueForTriage
             {
@@ -95,14 +94,12 @@ internal class Program
                     .ToList(),
             }).Compile();
 
-        var values = new Dictionary<string, object>
+        var issue = await connection.Run(query, new Dictionary<string, object>
         {
             { "owner", owner },
             { "repo", repo },
             { "issue_number", issueNumber }
-        };
-
-        var issue = await connection.Run(query, values);
+        });
 
         Console.WriteLine($"Issue {owner}/{repo}#{issue.Number} was {action?.ToString() ?? "processed"}");
         Console.WriteLine($"  Title: {issue.Title}");
@@ -124,40 +121,40 @@ internal class Program
         {
             var needsTriageLabelQuery = new Query()
                 .Repository(repo, owner, true)
-                .Label(IssueTriageRules.NeedsTriageLabel)
+                .Label(Var("label"))
                 .Select(label => label.Id)
                 .Compile();
 
-            ID needsTriageLabelId = await connection.Run(needsTriageLabelQuery);
+            ID needsTriageLabelId = await connection.Run(needsTriageLabelQuery, new Dictionary<string, object>
+            {
+                { "label", IssueTriageRules.NeedsTriageLabel }
+            });
 
             if (string.IsNullOrEmpty(needsTriageLabelId.Value))
             {
-                Console.WriteLine($"  Label '{IssueTriageRules.NeedsTriageLabel}' could not be found. Aborting.");
+                throw new ApplicationException($"Label '{IssueTriageRules.NeedsTriageLabel}' could not be found. Aborting.");
+            }
+            if (addNeedsTriageLabel)
+            {
+                var needsTriage = new Mutation()
+                    .AddLabelsToLabelable(new AddLabelsToLabelableInput { LabelableId = issue.Id, LabelIds = new[] { needsTriageLabelId } })
+                    .Select(result => result.ClientMutationId)
+                    .Compile();
+
+                await connection.Run(needsTriage);
+
+                Console.WriteLine($"  Issue triage is needed. {IssueTriageRules.NeedsTriageLabel} was added.");
             }
             else
             {
-                if (addNeedsTriageLabel)
-                {
-                    var needsTriage = new Mutation()
-                        .AddLabelsToLabelable(new AddLabelsToLabelableInput { LabelableId = issue.Id, LabelIds = new[] { needsTriageLabelId } })
-                        .Select(result => result.ClientMutationId)
-                        .Compile();
+                var triageCompleted = new Mutation()
+                    .RemoveLabelsFromLabelable(new RemoveLabelsFromLabelableInput { LabelableId = issue.Id, LabelIds = new[] { needsTriageLabelId } })
+                    .Select(result => result.ClientMutationId)
+                    .Compile();
 
-                    await connection.Run(needsTriage);
+                await connection.Run(triageCompleted);
 
-                    Console.WriteLine($"  Issue triage is needed. {IssueTriageRules.NeedsTriageLabel} was added.");
-                }
-                else
-                {
-                    var triageCompleted = new Mutation()
-                        .RemoveLabelsFromLabelable(new RemoveLabelsFromLabelableInput { LabelableId = issue.Id, LabelIds = new[] { needsTriageLabelId } })
-                        .Select(result => result.ClientMutationId)
-                        .Compile();
-
-                    await connection.Run(triageCompleted);
-
-                    Console.WriteLine($"  Issue triage completed. {IssueTriageRules.NeedsTriageLabel} was removed.");
-                }
+                Console.WriteLine($"  Issue triage completed. {IssueTriageRules.NeedsTriageLabel} was removed.");
             }
         }
         else
