@@ -1,0 +1,49 @@
+name: "Publish: areapods"
+
+on:
+  workflow_call:
+    inputs:
+      action_name:
+        description: The name of the action to build and publish
+        required: true
+        type: string
+      action_folder:
+        description: The name of the action folder within the 'src' folder
+        required: true
+        type: string
+
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log in to the container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Docker metadata
+        id: metadata
+        uses: docker/metadata-action@v4
+        with:
+          images: ghcr.io/${{ github.repository }}/${{ inputs.action_name }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: ./src
+          build-args: |
+            ACTION_NAME=${{ inputs.action_name }}
+            ACTION_FOLDER=${{ inputs.action_folder }}
+          push:    true # ${{ github.event_name != 'pull_request' }}
+          tags:    ${{ steps.metadata.outputs.tags }}
+          labels:  ${{ steps.metadata.outputs.labels }}

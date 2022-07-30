@@ -11,38 +11,15 @@ on:
 
   workflow_dispatch:
 
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: jeffhandley/github-actions/backlog
-  IMAGE_TAG: ${{ github.ref_name }}
-
 jobs:
-  areapods:
-    runs-on: ubuntu-latest
+  publish-action:
 
     permissions:
       contents: read
       packages: write
 
-    steps:
-      - name: Log job info
-        run: |
-          echo "Building and pushing Docker image:"
-          echo "  ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}"
+    uses: ./.github/workflows/publish-action.yml
 
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Log in to the container registry
-        uses: docker/login-action@v2
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v3
-        with:
-          context: ./src/Backlog
-          push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+    with:
+      action_name: areapods
+      action_folder: AreaPods
