@@ -41,9 +41,9 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./src
-          build-args:
-            - 'ACTION_NAME=${{ inputs.action_name }}'
-            - 'ACTION_FOLDER=${{ inputs.action_folder }}'
+          build-args: |
+            ACTION_NAME=${{ inputs.action_name }}
+            ACTION_FOLDER=${{ inputs.action_folder }}
           push:    ${{ github.event_name != 'pull_request' }}
           tags:    ${{ steps.metadata.outputs.tags }}
           labels:  ${{ steps.metadata.outputs.labels }}
