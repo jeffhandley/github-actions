@@ -1,4 +1,4 @@
-name: "Publish: backlog"
+name: "Publish: areapods"
 
 on:
   push:
