@@ -39,10 +39,10 @@ internal class Program
             IsRequired = true
         };
 
-        var authorIssuesCommand = new Command("author-issues", "Label issues authored by specified users") { issueArg, authorsArg, labelArg };
+        var authorIssuesCommand = new Command("authors", "Label issues authored by specified users") { issueArg, authorsArg, labelArg };
         authorIssuesCommand.SetHandler(HandleAuthorIssues, issueArg, authorsArg, labelArg);
 
-        var rootCommand = new RootCommand("Issue Labeler commands") { authorIssuesCommand };
+        var rootCommand = new RootCommand("Issue Labeler actions") { authorIssuesCommand };
 
         return await rootCommand.InvokeAsync(args);
     }

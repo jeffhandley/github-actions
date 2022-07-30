@@ -33,7 +33,7 @@ internal class Program
         var issueTriageCommand = new Command("issue-triage", "Issue Triage") { issueArg, actionArg, assigneeArg, labelArg };
         issueTriageCommand.SetHandler(HandleIssueTriage, issueArg, actionArg, assigneeArg, labelArg);
 
-        var rootCommand = new RootCommand("Area Pod commands") { issueTriageCommand };
+        var rootCommand = new RootCommand("Area Pod actions") { issueTriageCommand };
 
         return await rootCommand.InvokeAsync(args);
     }

@@ -1,4 +1,4 @@
-name: "Issue Labeler: Author Issues"
+name: "Issue Labeler: Authors"
 
 on:
   issues:
@@ -41,8 +41,8 @@ jobs:
       issues: write
 
     steps:
-      - name: author-issues
-        uses: jeffhandley/github-actions/actions/issue-labeler/author-issues@main
+      - name: authors
+        uses: jeffhandley/github-actions/actions/issue-labeler/authors@main
         with:
           issue:   ${{ fromJson(inputs.issue || github.event.issue.number) }}
           authors: ${{ inputs.authors || 'jeffhandley eilon heng-liu' }}
