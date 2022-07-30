@@ -1,8 +1,6 @@
-ARG ACTION_NAME
-ARG ACTION_FOLDER
-
 # Create an actions-build image that has the .NET SDK installed
 FROM mcr.microsoft.com/dotnet/sdk:7.0 as actions-build
+ARG ACTION_FOLDER
 
 # Install NativeAOT build prerequisites
 RUN apt-get update \
@@ -18,6 +16,8 @@ RUN dotnet publish -c Release -o artifacts -r ubuntu.20.04-x64 --sc $ACTION_FOLD
 
 # Export an image that includes the .NET native dependencies as well as the build artifacts
 FROM mcr.microsoft.com/dotnet/runtime-deps:7.0
+ARG ACTION_NAME
+
 COPY --from=actions-build /actions-build/artifacts /actions
 
 ENV PATH=$PATH:/actions
