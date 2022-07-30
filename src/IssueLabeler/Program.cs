@@ -88,36 +88,45 @@ internal class Program
         Console.WriteLine($"  Labels: {string.Join(", ", issue.Labels)}");
         Console.WriteLine($"  Author: {issue.Author}");
 
-        var needsLabel = authors.Contains(issue.Author, StringComparer.OrdinalIgnoreCase) && !issue.Labels.Contains(label, StringComparer.OrdinalIgnoreCase);
-
-        if (needsLabel)
+        if (authors.Contains(issue.Author, StringComparer.OrdinalIgnoreCase))
         {
-            var labelQuery = new Query()
-                .Repository(Var("repo"), Var("owner"))
-                .Label(label)
-                .Select(l => l.Id)
-                .Compile();
-
-            ID labelId = await connection.Run(labelQuery, new Dictionary<string, object>
+            if (!issue.Labels.Contains(label, StringComparer.OrdinalIgnoreCase))
             {
-                { "owner", owner },
-                { "repo", repo },
-                { "label", label }
-            });
+                var labelQuery = new Query()
+                    .Repository(Var("repo"), Var("owner"))
+                    .Label(label)
+                    .Select(l => l.Id)
+                    .Compile();
 
-            if (string.IsNullOrEmpty(labelId.Value))
-            {
-                throw new ApplicationException($"Label '{label}' could not be found. Aborting.");
+                ID labelId = await connection.Run(labelQuery, new Dictionary<string, object>
+                {
+                    { "owner", owner },
+                    { "repo", repo },
+                    { "label", label }
+                });
+
+                if (string.IsNullOrEmpty(labelId.Value))
+                {
+                    throw new ApplicationException($"Label '{label}' could not be found. Aborting.");
+                }
+
+                var addLabel = new Mutation()
+                    .AddLabelsToLabelable(new AddLabelsToLabelableInput { LabelableId = issue.Id, LabelIds = new[] { labelId } })
+                    .Select(result => result.ClientMutationId)
+                    .Compile();
+
+                await connection.Run(addLabel);
+
+                Console.WriteLine($"Issue author '{issue.Author}' matched and the issue needed the label. '{label}' was added.");
             }
-
-            var addLabel = new Mutation()
-                .AddLabelsToLabelable(new AddLabelsToLabelableInput { LabelableId = issue.Id, LabelIds = new[] { labelId } })
-                .Select(result => result.ClientMutationId)
-                .Compile();
-
-            await connection.Run(addLabel);
-
-            Console.WriteLine($"  Issue author matched and the issue needed the label. '{label}' was added.");
+            else
+            {
+                Console.WriteLine($"Issue author matched but '{label}' is already applied.");
+            }
+        }
+        else
+        {
+            Console.WriteLine($"Issue author '{issue.Author}' did not match");
         }
     }
 }
