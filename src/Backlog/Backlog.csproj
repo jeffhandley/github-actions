@@ -15,8 +15,9 @@
     <IlcOptimizationPreference>Speed</IlcOptimizationPreference>
   </PropertyGroup>
 
-  <ItemGroup Label="Runtime Directives (for AOT)" Condition="'$(RuntimeIdentifier)' != ''">
-    <RdXmlFile Include="rd.xml" />
+  <ItemGroup Label="Publish Optimization Configs" Condition="'$(RuntimeIdentifier)' != ''">
+    <TrimmerRootDescriptor Include="..\Trimmer.Descriptors.xml" />
+    <RdXmlFile Include="..\rd.xml" />
   </ItemGroup>
 
   <ItemGroup Label="Exclude the artifacts folder from the project">

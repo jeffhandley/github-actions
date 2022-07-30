@@ -11,7 +11,7 @@ COPY . /actions-build
 WORKDIR /actions-build
 
 # Build/Publish the self-contained NativeAOT image for ubuntu:22.04
-RUN dotnet publish -c Release -o artifacts -r ubuntu.22.04-x64 --sc
+RUN dotnet publish -c Release -o artifacts -r ubuntu.20.04-x64 --sc
 
 # Export an image that includes the .NET native dependencies as well as the build artifacts
 FROM mcr.microsoft.com/dotnet/runtime-deps:7.0
