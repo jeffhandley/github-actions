@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AreaPods", "AreaPods\AreaPo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backlog", "Backlog\Backlog.csproj", "{48AAC0D5-F2D5-4D4B-A077-6667B550794B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IssueLabeler", "IssueLabeler\IssueLabeler.csproj", "{EE6581B8-18F4-4281-A375-E875F0362824}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{48AAC0D5-F2D5-4D4B-A077-6667B550794B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48AAC0D5-F2D5-4D4B-A077-6667B550794B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48AAC0D5-F2D5-4D4B-A077-6667B550794B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE6581B8-18F4-4281-A375-E875F0362824}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE6581B8-18F4-4281-A375-E875F0362824}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE6581B8-18F4-4281-A375-E875F0362824}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE6581B8-18F4-4281-A375-E875F0362824}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
