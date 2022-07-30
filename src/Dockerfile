@@ -1,6 +1,7 @@
 # Create an actions-build image that has the .NET SDK installed
 FROM mcr.microsoft.com/dotnet/sdk:7.0 as actions-build
 ARG ACTION_FOLDER
+ARG ACTION_NAME
 
 # Install NativeAOT build prerequisites
 RUN apt-get update \
