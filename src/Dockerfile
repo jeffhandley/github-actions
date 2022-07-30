@@ -20,5 +20,9 @@ ARG ACTION_NAME
 
 COPY --from=actions-build /actions-build/artifacts /actions
 
-ENV PATH=$PATH:/actions
-ENTRYPOINT [ "/actions/$ACTION_NAME" ]
+# Create an run-action.sh that will invoke the action (since entrypoints cannot expand arguments)
+RUN echo "#!/bin/bash\n./actions/$ACTION_NAME \$@\n" > ./run-action.sh
+RUN chmod +x ./run-action.sh
+
+ENTRYPOINT [ "./run-action.sh" ]
+
