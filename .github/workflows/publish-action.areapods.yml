@@ -13,7 +13,13 @@ on:
 
 jobs:
   publish-action:
+
+    permissions:
+      contents: read
+      packages: write
+
     uses: ./.github/workflows/publish-action.yml
+
     with:
       action_name: areapods
       action_folder: ./src/AreaPods
