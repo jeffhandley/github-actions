@@ -17,7 +17,7 @@
 
   <ItemGroup Label="Publish Optimization Configs" Condition="'$(RuntimeIdentifier)' != ''">
     <TrimmerRootDescriptor Include="..\Trimmer.Descriptors.xml" />
-    <RdXmlFile Include="..\rd.xml" />
+    <RdXmlFile Include="..\Aot.Directives.xml" />
   </ItemGroup>
 
   <ItemGroup Label="Exclude the artifacts folder from the project">
