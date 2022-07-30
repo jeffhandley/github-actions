@@ -1,5 +1,5 @@
 bin/
 obj/
 .vs/
-*.pdb
-*.xml
+artifacts/*.pdb
+artifacts/*.xml
