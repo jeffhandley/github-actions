@@ -8,7 +8,7 @@ on:
         required: true
         type: string
       action_folder:
-        description: The path to the action's folder (containing the Dockerfile)
+        description: The name of the action folder within the 'src' folder
         required: true
         type: string
 
@@ -17,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
+      contents: read
       packages: write
 
     steps:
@@ -39,7 +40,10 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
-          context: ${{ inputs.action_folder }}
+          context: ./src
+          build-args:
+            - 'ACTION_NAME=${{ inputs.action_name }}'
+            - 'ACTION_FOLDER=${{ inputs.action_folder }}'
           push:    ${{ github.event_name != 'pull_request' }}
           tags:    ${{ steps.metadata.outputs.tags }}
           labels:  ${{ steps.metadata.outputs.labels }}

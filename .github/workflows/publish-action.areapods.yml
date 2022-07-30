@@ -22,4 +22,4 @@ jobs:
 
     with:
       action_name: areapods
-      action_folder: ./src/AreaPods
+      action_folder: AreaPods

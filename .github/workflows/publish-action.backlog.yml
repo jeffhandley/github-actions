@@ -22,4 +22,4 @@ jobs:
 
     with:
       action_name: backlog
-      action_folder: ./src/Backlog
+      action_folder: Backlog
