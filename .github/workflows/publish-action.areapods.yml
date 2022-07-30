@@ -13,7 +13,7 @@ on:
 
 jobs:
   publish-action:
-    uses: jeffhandley/github-actions/.github/workflows/publish-action.yml@main
+    uses: jeffhandley/github-actions/.github/workflows/publish-action.yml@${{ github.ref_name }}
     with:
       action_name: areapods
       action_folder: ./src/AreaPods

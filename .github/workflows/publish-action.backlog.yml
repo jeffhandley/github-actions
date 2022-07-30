@@ -13,7 +13,7 @@ on:
 
 jobs:
   publish-action:
-    uses: jeffhandley/github-actions/.github/workflows/publish-action.yml@main
+    uses: jeffhandley/github-actions/.github/workflows/publish-action.yml@build-cleanup
     with:
       action_name: backlog
       action_folder: ./src/Backlog
