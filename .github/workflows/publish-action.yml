@@ -4,8 +4,10 @@ on:
   workflow_call:
     inputs:
       action_name:
+        type: string
         required: true
       action_folder:
+        type: string
         required: true
 
 jobs:

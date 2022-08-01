@@ -7,28 +7,33 @@ on:
   workflow_call:
     inputs:
       issue:
-        required: true
         type: number
+        required: true
       action:
+        type: string
         required: true
       assignee:
+        type: string
       label:
+        type: string
 
   workflow_dispatch:
     inputs:
       issue:
         description: Issue number
-        required: true
         type: number
+        required: true
       action:
         description: The event action to simulate
-        required: true
         type: choice
+        required: true
         options: [opened, closed, transferred, reopened, assigned, unassigned, labeled, unlabeled, milestoned, demilestoned]
       assignee:
         description: The assignee (assigned or unassigned)
+        type: string
       label:
         description: The label (labeled or unlabeled)
+        type: string
 
 jobs:
   issue-triage:

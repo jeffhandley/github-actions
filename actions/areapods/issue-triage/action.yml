@@ -6,15 +6,18 @@ inputs:
     default: ${{ github.token }}
   issue:
     description: The issue number to triage
-    required: true
     type: number
+    required: true
   action:
     description: The event action performed
+    type: string
     required: true
   assignee:
     description: The assignee (assigned or unassigned)
+    type: string
   label:
     description: The label (labeled or unlabeled)
+    type: string
 
 runs:
   using: docker

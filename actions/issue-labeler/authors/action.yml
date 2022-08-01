@@ -6,13 +6,15 @@ inputs:
     default: ${{ github.token }}
   issue:
     description: The issue number to process
-    required: true
     type: number
+    required: true
   authors:
     description: The authors whose issues get labeled (separated by spaces)
+    type: string
     required: true
   label:
     description: The label to apply for the specified authors
+    type: string
     required: true
 
 runs:

@@ -7,25 +7,29 @@ on:
   workflow_call:
     inputs:
       issue:
-        required: true
         type: number
+        required: true
       authors:
+        type: string
         required: true
       label:
+        type: string
         required: true
   
   workflow_dispatch:
     inputs:
       issue:
         description: The issue number to process
-        required: true
         type: number
+        required: true
       authors:
         description: The authors whose issues get labeled (separated by spaces)
+        type: string
         required: true
         default: 'jeffhandley eilon heng-liu'
       label:
         description: The label to apply for the specified authors
+        type: string
         required: true
         default: 'team-member'
 
