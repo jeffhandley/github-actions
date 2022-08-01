@@ -5,10 +5,8 @@ on:
     inputs:
       action_name:
         required: true
-        type: string
       action_folder:
         required: true
-        type: string
 
 jobs:
   docker-build:
@@ -42,6 +40,6 @@ jobs:
           build-args: |
             ACTION_NAME=${{ inputs.action_name }}
             ACTION_FOLDER=${{ inputs.action_folder }}
-          push:    true # ${{ github.event_name != 'pull_request' }}
+          push:    true # To disable to pull requests, use ${{ github.event_name != 'pull_request' }}
           tags:    ${{ steps.metadata.outputs.tags }}
           labels:  ${{ steps.metadata.outputs.labels }}

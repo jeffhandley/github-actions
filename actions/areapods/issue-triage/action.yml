@@ -11,25 +11,20 @@ inputs:
   action:
     description: The event action performed
     required: true
-    type: string
   assignee:
     description: The assignee (assigned or unassigned)
-    required: false
-    type: string
   label:
     description: The label (labeled or unlabeled)
-    required: false
-    type: string
 
 runs:
   using: docker
   image: docker://ghcr.io/jeffhandley/github-actions/areapods:main
   args: [
     "issue-triage",
-    "--issue",    "${{ inputs.issue    }}",
-    "--action",   "${{ inputs.action   }}",
+    "--issue",    "${{ inputs.issue }}",
+    "--action",   "${{ inputs.action }}",
     "--assignee", "${{ inputs.assignee }}",
-    "--label",    "${{ inputs.label    }}",
+    "--label",    "${{ inputs.label }}",
   ]
   env:
     GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}

@@ -11,13 +11,8 @@ on:
         type: number
       action:
         required: true
-        type: string
       assignee:
-        required: false
-        type: string
       label:
-        required: false
-        type: string
 
   workflow_dispatch:
     inputs:
@@ -32,12 +27,8 @@ on:
         options: [opened, closed, transferred, reopened, assigned, unassigned, labeled, unlabeled, milestoned, demilestoned]
       assignee:
         description: The assignee (assigned or unassigned)
-        required: false
-        type: string
       label:
         description: The label (labeled or unlabeled)
-        required: false
-        type: string
 
 jobs:
   issue-triage:
@@ -52,7 +43,7 @@ jobs:
       - name: Area Pod Issue Triage
         uses: jeffhandley/github-actions/actions/areapods/issue-triage@main
         with:
-          issue:    ${{ inputs.issue || github.event.issue.number }}
-          action:   ${{ inputs.action || github.event.action }}
-          assignee: ${{ inputs.assignee || github.event.assignee.login }}
-          label:    ${{ inputs.label || github.event.label.name }}
+          issue:    ${{ fromJson(inputs.issue) || github.event.issue.number }}
+          action:   ${{ inputs.action          || github.event.action }}
+          assignee: ${{ inputs.assignee        || github.event.assignee.login }}
+          label:    ${{ inputs.label           || github.event.label.name }}

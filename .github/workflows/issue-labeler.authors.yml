@@ -11,10 +11,8 @@ on:
         type: number
       authors:
         required: true
-        type: string
       label:
         required: true
-        type: string
   
   workflow_dispatch:
     inputs:
@@ -23,14 +21,12 @@ on:
         required: true
         type: number
       authors:
-        description: The authors whose issues get labeled
+        description: The authors whose issues get labeled (separated by spaces)
         required: true
-        type: string
         default: 'jeffhandley eilon heng-liu'
       label:
-        description: The label to apply if the issue was authored by one of the specified users
+        description: The label to apply for the specified authors
         required: true
-        type: string
         default: 'team-member'
 
 jobs:
@@ -44,6 +40,6 @@ jobs:
       - name: authors
         uses: jeffhandley/github-actions/actions/issue-labeler/authors@main
         with:
-          issue:   ${{ fromJson(inputs.issue || github.event.issue.number) }}
-          authors: ${{ inputs.authors || 'jeffhandley eilon heng-liu' }}
-          label:   ${{ inputs.label || 'team-member' }}
+          issue:   ${{ fromJson(inputs.issue) || github.event.issue.number }}
+          authors: ${{ inputs.authors         || 'jeffhandley eilon heng-liu' }}
+          label:   ${{ inputs.label           || 'team-member' }}

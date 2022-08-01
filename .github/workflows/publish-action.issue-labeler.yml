@@ -13,13 +13,11 @@ on:
 
 jobs:
   publish-action:
-
     permissions:
       contents: read
       packages: write
 
     uses: ./.github/workflows/publish-action.yml
-
     with:
       action_name: issue-labeler
       action_folder: IssueLabeler
