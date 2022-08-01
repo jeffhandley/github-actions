@@ -26,12 +26,12 @@ on:
         description: The authors whose issues get labeled (separated by spaces)
         type: string
         required: true
-        default: 'jeffhandley eilon heng-liu'
+        default: jeffhandley eilon heng-liu
       label:
         description: The label to apply for the specified authors
         type: string
         required: true
-        default: 'team-member'
+        default: team-member
 
 jobs:
   issue-labeler:
