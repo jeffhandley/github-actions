@@ -34,7 +34,7 @@ on:
         default: team-member
 
 jobs:
-  issue-labeler:
+  authors:
     runs-on: ubuntu-latest
 
     permissions:
