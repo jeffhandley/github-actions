@@ -1,0 +1,20 @@
+<Project>
+  <PropertyGroup Label="Publish Optimizations" Condition="'$(RuntimeIdentifier)' != ''">
+    <PublishAOT>true</PublishAOT>
+    <PublishTrimmed>true</PublishTrimmed>
+    <DebugMode>none</DebugMode>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <IlcOptimizationPreference>Speed</IlcOptimizationPreference>
+  </PropertyGroup>
+
+  <ItemGroup Label="Publish Optimization Configs" Condition="'$(RuntimeIdentifier)' != ''">
+    <TrimmerRootDescriptor Include="..\Trimmer.Descriptors.xml" />
+    <RdXmlFile Include="..\Aot.Directives.xml" />
+  </ItemGroup>
+
+  <ItemGroup Label="Exclude the artifacts folder from the project">
+    <Compile Remove="artifacts\**" />
+    <EmbeddedResource Remove="artifacts\**" />
+    <None Remove="artifacts\**" />
+  </ItemGroup>
+</Project>
