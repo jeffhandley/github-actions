@@ -4,7 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <Nullable>enable</Nullable>
-    <AssemblyName>issue-labeler</AssemblyName>
+    <AssemblyName>labeler</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

@@ -3,7 +3,7 @@ using System.CommandLine;
 using System.Threading.Tasks;
 using static System.Environment;
 
-namespace IssueLabeler;
+namespace Labeler;
 
 internal class Program
 {
@@ -17,9 +17,9 @@ internal class Program
             throw new ArgumentException("Missing environment variable. GITHUB_ACTOR, GITHUB_TOKEN, and GITHUB_REPOSITORY are required.");
         }
 
-        var rootCommand = new RootCommand("Issue Labeler actions") {
+        var rootCommand = new RootCommand("Labeler actions") {
             Authors.GetActionCommand("authors"),
-            CommunityPullRequests.GetActionCommand("community-contribution")
+            CommunityContribution.GetActionCommand("community-contribution")
         };
 
         return await rootCommand.InvokeAsync(args);
