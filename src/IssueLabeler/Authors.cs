@@ -9,7 +9,7 @@ using static Octokit.GraphQL.Variable;
 
 namespace IssueLabeler
 {
-    internal class AuthorsCommand
+    internal class Authors
     {
         public static Command GetActionCommand(string actionName)
         {
@@ -30,11 +30,11 @@ namespace IssueLabeler
             };
 
             var authorIssuesCommand = new Command(actionName, "Label issues authored by specified users") { issueArg, authorsArg, labelArg };
-            authorIssuesCommand.SetHandler(HandleAuthorIssues, issueArg, authorsArg, labelArg);
+            authorIssuesCommand.SetHandler(HandleIssue, issueArg, authorsArg, labelArg);
             return authorIssuesCommand;
         }
 
-        static async Task HandleAuthorIssues(uint issueNumber, List<string> authors, string label)
+        static async Task HandleIssue(uint issueNumber, List<string> authors, string label)
         {
             string[] ownerRepo = Program.GITHUB_REPOSITORY.Split('/');
             string owner = ownerRepo[0];
@@ -45,7 +45,7 @@ namespace IssueLabeler
             Console.WriteLine($"  Authors:  {string.Join(", ", authors)}");
             Console.WriteLine($"  Label:    {label}");
 
-            var appInfo = new ProductHeaderValue("AreaPods");
+            var appInfo = new ProductHeaderValue("IssueLabeler.Authors");
             var connection = new Connection(appInfo, Program.GITHUB_TOKEN);
 
             var issueQuery = new Query()

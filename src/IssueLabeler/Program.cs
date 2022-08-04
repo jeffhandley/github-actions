@@ -17,7 +17,10 @@ internal class Program
             throw new ArgumentException("Missing environment variable. GITHUB_ACTOR, GITHUB_TOKEN, and GITHUB_REPOSITORY are required.");
         }
 
-        var rootCommand = new RootCommand("Issue Labeler actions") { AuthorsCommand.GetActionCommand("authors") };
+        var rootCommand = new RootCommand("Issue Labeler actions") {
+            Authors.GetActionCommand("authors"),
+            CommunityPullRequests.GetActionCommand("community-contribution")
+        };
 
         return await rootCommand.InvokeAsync(args);
     }
