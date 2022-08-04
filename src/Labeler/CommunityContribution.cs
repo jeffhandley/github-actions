@@ -109,7 +109,7 @@ internal class CommunityContribution
             return;
         }
 
-        if (ignoreTeam is not null)
+        if (!string.IsNullOrWhiteSpace(ignoreTeam))
         {
             var isTeamMember = await TeamQueries.QueryIsTeamMember(connection, owner, ignoreTeam, author);
 
