@@ -20,11 +20,13 @@ inputs:
 runs:
   using: docker
   image: docker://ghcr.io/jeffhandley/github-actions/labeler:main
-  args: [
-    "authors",
-    "--issue",   "${{ inputs.issue }}",
-    "--label",   "${{ inputs.label }}",
-    "--authors", "${{ inputs.authors }}"
-  ]
+  args:
+    - "authors"
+    - "--issue"
+    - "${{ inputs.issue }}"
+    - "--label"
+    - "${{ inputs.label }}"
+    - "--authors"
+    - "${{ inputs.authors }}"
   env:
     GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
