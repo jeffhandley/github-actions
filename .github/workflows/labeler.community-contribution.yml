@@ -48,5 +48,5 @@ jobs:
         with:
           issue:          ${{ fromJson(inputs.pr)    || github.event.number }}
           label:          ${{ inputs.label           || 'community-contribution' }}
-          ignore_team:    ${{ inputs.ignore_team     }}
-          ignore_authors: ${{ inputs.ignore_authors  }}
+          ignore_team:    ${{ inputs.ignore_team     || '' }}
+          ignore_authors: ${{ inputs.ignore_authors  || '' }}
