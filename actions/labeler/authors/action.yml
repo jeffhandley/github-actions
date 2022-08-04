@@ -24,7 +24,7 @@ runs:
     "authors",
     "--issue",   "${{ inputs.issue }}",
     "--label",   "${{ inputs.label }}",
-    "--authors", "${{ inputs.authors }}",
+    "--authors", "${{ inputs.authors }}"
   ]
   env:
     GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
