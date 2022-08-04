@@ -24,7 +24,7 @@ runs:
   image: docker://ghcr.io/jeffhandley/github-actions/labeler:main
   args: [
     "community-contribution",
-    "--issue",          "${{ inputs.pr }}",
+    "--pr",             "${{ inputs.pr }}",
     "--label",          "${{ inputs.label }}",
     "--ignore-team",    "${{ inputs.ignore_team }}",
     "--ignore-authors", "${{ inputs.ignore_authors }}"
