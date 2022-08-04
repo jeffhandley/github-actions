@@ -1,0 +1,52 @@
+name: "Labeler: Community Contributions"
+
+on:
+  pull_request:
+    types: [opened]
+
+  workflow_call:
+    inputs:
+      pr:
+        type: number
+        required: true
+      label:
+        type: string
+        required: true
+      ignore_team:
+        type: string
+      ignore_authors:
+        type: string
+
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: The pull request number to process
+        type: number
+        required: true
+      label:
+        description: The label to apply for community-authored pull requests
+        type: string
+        required: true
+        default: community-contribution
+      ignore_team:
+        description: A GitHub team containing authors to ignore (without the org prefix)
+        type: string
+      ignore_authors:
+        description: A list of authors to ignore (separated by spaces)
+        type: string
+
+jobs:
+  community-contribution:
+    runs-on: ubuntu-latest
+
+    permissions:
+      issues: write
+
+    steps:
+      - name: community-contribution
+        uses: jeffhandley/github-actions/actions/labeler/community-contribution@main
+        with:
+          issue:          ${{ fromJson(inputs.pr)    || github.event.number }}
+          label:          ${{ inputs.label           || 'community-contribution' }}
+          ignore_team:    ${{ inputs.ignore_team     }}
+          ignore_authors: ${{ inputs.ignore_authors  }}

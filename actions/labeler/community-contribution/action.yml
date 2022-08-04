@@ -1,0 +1,33 @@
+name: Label Community Contribution Pull Requests
+description: Apply a label to PRs authored by community contributors
+
+inputs:
+  GITHUB_TOKEN:
+    default: ${{ github.token }}
+  pr:
+    description: The pull request number to process
+    type: number
+    required: true
+  label:
+    description: The label to apply for community-authored pull requests
+    type: string
+    required: true
+  ignore_team:
+    description: A GitHub team containing authors to ignore (without the org prefix)
+    type: string
+  ignore_authors:
+    description: A list of authors to ignore (separated by spaces)
+    type: string
+
+runs:
+  using: docker
+  image: docker://ghcr.io/jeffhandley/github-actions/labeler:main
+  args: [
+    "community-contribution",
+    "--issue",          "${{ inputs.pr }}",
+    "--label",          "${{ inputs.label }}",
+    "--ignore-team",    "${{ inputs.ignore_team }}",
+    "--ignore-authors", "${{ inputs.ignore_authors }}"
+  ]
+  env:
+    GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}

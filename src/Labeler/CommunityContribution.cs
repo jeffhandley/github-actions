@@ -17,8 +17,7 @@ internal class CommunityContribution
         var prArg = new Option<uint>("--pr", "The pull request number to process") { IsRequired = true };
         var labelArg = new Option<string>("--label", "The label to apply for community-authored pull requests") { IsRequired = true };
 
-        var ignoreBotsArg = new Option<bool>("--ignore-apps", () => true, "Ignore pull requests authored by apps");
-        var ignoreTeamArg = new Option<string?>("--ignore-team", "A GitHub team containing authors to ignore");
+        var ignoreTeamArg = new Option<string?>("--ignore-team", "A GitHub team containing authors to ignore (without the org prefix)");
         var ignoreAuthorsArg = new Option<List<string>?>("--ignore-authors", "A list of authors to ignore")
         {
             AllowMultipleArgumentsPerToken = true
@@ -28,17 +27,17 @@ internal class CommunityContribution
         var testAuthorArg = new Option<string?>("--test-author", "The author to simulate for the pull request for testing") { IsHidden = true };
 
         var communityPrsCommand = new Command(actionName, "Label issues authored by specified users") {
-            prArg, labelArg, ignoreBotsArg, ignoreAuthorsArg, ignoreTeamArg, testArg, testAuthorArg
+            prArg, labelArg, ignoreAuthorsArg, ignoreTeamArg, testArg, testAuthorArg
         };
 
         communityPrsCommand.SetHandler(HandlePullRequest,
-            prArg, labelArg, ignoreBotsArg, ignoreTeamArg, ignoreAuthorsArg, testArg, testAuthorArg
+            prArg, labelArg, ignoreTeamArg, ignoreAuthorsArg, testArg, testAuthorArg
         );
 
         return communityPrsCommand;
     }
 
-    static async Task HandlePullRequest(uint prNumber, string label, bool ignoreBots, string? ignoreTeam, List<string>? ignoreAuthors, bool isTestMode, string? testAuthor)
+    static async Task HandlePullRequest(uint prNumber, string label, string? ignoreTeam, List<string>? ignoreAuthors, bool isTestMode, string? testAuthor)
     {
         string[] ownerRepo = Program.GITHUB_REPOSITORY.Split('/');
         string owner = ownerRepo[0];
@@ -47,7 +46,6 @@ internal class CommunityContribution
         Console.WriteLine($"Handling Pull Request Event");
         Console.WriteLine($"  PR:             {owner}/{repo}#{prNumber}");
         Console.WriteLine($"  Label:          {label}");
-        Console.WriteLine($"  Ignore Bots:    {ignoreBots}");
         Console.WriteLine($"  Ignore Team:    {ignoreTeam}");
         Console.WriteLine($"  Ignore Authors: {(ignoreAuthors?.Any() == true ? string.Join(", ", ignoreAuthors) : "")}");
 
@@ -92,11 +90,11 @@ internal class CommunityContribution
 
         // Allow a test author to be specified, overriding the PR's author
         var author = (isTestMode ? testAuthor : null) ?? data.PullRequest.Author.Login;
-        var authorIsApp = data.PullRequest.Author.ResourcePath.StartsWith("/apps/", StringComparison.InvariantCultureIgnoreCase);
+        var authorIsBot = data.PullRequest.Author.ResourcePath.StartsWith("/apps/", StringComparison.InvariantCultureIgnoreCase);
 
         Console.WriteLine($"PR {owner}/{repo}#{data.PullRequest.Number}:");
         Console.WriteLine($"  State:  {(data.PullRequest.Closed ? "Closed" : "Open")}");
-        Console.WriteLine($"  Author: {author}{(authorIsApp ? "[bot]" : "")}");
+        Console.WriteLine($"  Author: {author}{(authorIsBot ? "[bot]" : "")}");
         Console.WriteLine($"  Labels: {string.Join(", ", data.PullRequest.Labels)}");
 
         if (ignoreAuthors?.Contains(author, StringComparer.OrdinalIgnoreCase) == true)
@@ -105,7 +103,7 @@ internal class CommunityContribution
             return;
         }
 
-        if (ignoreBots && authorIsApp)
+        if (authorIsBot)
         {
             Console.WriteLine($"Author '{author}' is ignored as a bot.");
             return;
