@@ -18,6 +18,8 @@
     </Assembly>
     <Assembly Name="System.Private.Corelib">
       <Type Name="System.Func`1[[System.Nullable`1[[Octokit.GraphQL.Core.Arg`1[[Octokit.GraphQL.Model.LabelOrder, OctoKit.GraphQL]], OctoKit.GraphQL.Core]], System.Private.Corelib]]" Dynamic="Required All" />
+      <Type Name="System.Func`1[[Octokit.GraphQL.Core.Arg`1[[System.String, System.Private.Corelib]], OctoKit.GraphQL.Core]]" Dynamic="Required All" />
+      <Type Name="System.Func`1[[Octokit.GraphQL.Core.Arg`1[[System.Int32, System.Private.Corelib]], OctoKit.GraphQL.Core]]" Dynamic="Required All" />
     </Assembly>
   </Application>
 </Directives>
