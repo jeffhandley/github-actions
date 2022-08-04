@@ -26,8 +26,6 @@ runs:
     "community-contribution",
     "--pr", "${{ inputs.pr }}",
     "--label", "${{ inputs.label }}",
-    "${{ inputs.ignore_team && \"--ignore-team\" }}", "${{ inputs.ignore_team }}",
-    "${{ inputs.ignore_authors && \"--ignore-authors\" }}", "${{ inputs.ignore_authors }}",
   ]
   env:
     GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
