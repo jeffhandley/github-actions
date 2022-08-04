@@ -1,28 +1,18 @@
-﻿using System;
+﻿using Octokit.GraphQL;
+using Octokit.GraphQL.Model;
+using System;
 using System.Collections.Generic;
 using System.CommandLine;
 using System.Linq;
 using System.Threading.Tasks;
-using Octokit.GraphQL;
-using Octokit.GraphQL.Model;
 using static Octokit.GraphQL.Variable;
-using static System.Environment;
-using static System.Collections.Specialized.BitVector32;
 
-namespace IssueLabeler;
+namespace Labeler;
 
-internal class Program
+internal class Authors
 {
-    static string GITHUB_TOKEN => GetEnvironmentVariable("GITHUB_TOKEN")!;
-    static string GITHUB_REPOSITORY => GetEnvironmentVariable("GITHUB_REPOSITORY")!;
-
-    static async Task<int> Main(string[] args)
+    public static Command GetActionCommand(string actionName)
     {
-        if (string.IsNullOrWhiteSpace(GITHUB_TOKEN) || string.IsNullOrWhiteSpace(GITHUB_REPOSITORY))
-        {
-            throw new ArgumentException("Missing environment variable. GITHUB_ACTOR, GITHUB_TOKEN, and GITHUB_REPOSITORY are required.");
-        }
-
         var issueArg = new Option<uint>("--issue", "The issue number to process")
         {
             IsRequired = true
@@ -39,17 +29,14 @@ internal class Program
             IsRequired = true
         };
 
-        var authorIssuesCommand = new Command("authors", "Label issues authored by specified users") { issueArg, authorsArg, labelArg };
-        authorIssuesCommand.SetHandler(HandleAuthorIssues, issueArg, authorsArg, labelArg);
-
-        var rootCommand = new RootCommand("Issue Labeler actions") { authorIssuesCommand };
-
-        return await rootCommand.InvokeAsync(args);
+        var authorIssuesCommand = new Command(actionName, "Label issues authored by specified users") { issueArg, authorsArg, labelArg };
+        authorIssuesCommand.SetHandler(HandleIssue, issueArg, authorsArg, labelArg);
+        return authorIssuesCommand;
     }
 
-    static async Task HandleAuthorIssues(uint issueNumber, List<string> authors, string label)
+    static async Task HandleIssue(uint issueNumber, List<string> authors, string label)
     {
-        string[] ownerRepo = GITHUB_REPOSITORY.Split('/');
+        string[] ownerRepo = Program.GITHUB_REPOSITORY.Split('/');
         string owner = ownerRepo[0];
         string repo = ownerRepo[1];
 
@@ -58,8 +45,8 @@ internal class Program
         Console.WriteLine($"  Authors:  {string.Join(", ", authors)}");
         Console.WriteLine($"  Label:    {label}");
 
-        var appInfo = new ProductHeaderValue("AreaPods");
-        var connection = new Connection(appInfo, GITHUB_TOKEN);
+        var appInfo = new ProductHeaderValue("Labeler.Authors");
+        var connection = new Connection(appInfo, Program.GITHUB_TOKEN);
 
         var issueQuery = new Query()
             .Repository(Var("repo"), Var("owner"))

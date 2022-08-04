@@ -1,13 +1,13 @@
-name: "Publish: issue-labeler"
+name: "Publish: labeler"
 
 on:
   push:
     branches: [ main ]
-    paths: [ 'src/IssueLabeler/**', 'src/Dockerfile' ]
+    paths: [ 'src/Labeler/**', 'src/Dockerfile' ]
 
   pull_request:
     branches: [ main ]
-    paths: [ 'src/IssueLabeler/**', 'src/Dockerfile' ]
+    paths: [ 'src/Labeler/**', 'src/Dockerfile' ]
 
   workflow_dispatch:
 
@@ -19,5 +19,5 @@ jobs:
 
     uses: ./.github/workflows/publish-action.yml
     with:
-      action_name: issue-labeler
-      action_folder: IssueLabeler
+      action_name: labeler
+      action_folder: Labeler

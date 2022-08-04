@@ -8,23 +8,23 @@ inputs:
     description: The issue number to process
     type: number
     required: true
-  authors:
-    description: The authors whose issues get labeled (separated by spaces)
-    type: string
-    required: true
   label:
     description: The label to apply for the specified authors
+    type: string
+    required: true
+  authors:
+    description: The authors whose issues get labeled (separated by spaces)
     type: string
     required: true
 
 runs:
   using: docker
-  image: docker://ghcr.io/jeffhandley/github-actions/issue-labeler:main
+  image: docker://ghcr.io/jeffhandley/github-actions/labeler:main
   args: [
     "authors",
     "--issue",   "${{ inputs.issue }}",
-    "--authors", "${{ inputs.authors }}",
     "--label",   "${{ inputs.label }}",
+    "--authors", "${{ inputs.authors }}",
   ]
   env:
     GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
