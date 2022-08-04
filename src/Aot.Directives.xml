@@ -14,6 +14,9 @@
         <Method Name="ToObject">
           <GenericArgument Name="Octokit.GraphQL.Model.CommentAuthorAssociation, OctoKit.GraphQL" />
         </Method>
+        <Method Name="ToObject">
+          <GenericArgument Name="Octokit.GraphQL.Model.RepositoryPermission, OctoKit.GraphQL" />
+        </Method>
       </Type>
     </Assembly>
     <Assembly Name="System.Private.Corelib">
