@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup Label="Publish Optimizations" Condition="'$(RuntimeIdentifier)' != ''">
-    <PublishAOT>true</PublishAOT>
+    <PublishAOT>false</PublishAOT>
     <PublishTrimmed>true</PublishTrimmed>
     <DebugMode>none</DebugMode>
     <InvariantGlobalization>true</InvariantGlobalization>
